@@ -1,7 +1,20 @@
 """
 Константы для тестов
 """
-from typing import Dict
+
+API_ENDPOINTS = {
+    'users': {
+        'companies': '/api/v1/users/companies/',
+        'users_by_company_id': '/api/v1/users/users_by_company_id/',
+        'users_groups': '/api/v1/users/users_groups/'
+    },
+    'plastilin_db': {
+        'field_year': '/api/v1/plastilin_db/field_year/',
+        'species_table': '/api/v1/plastilin_db/species_table/',
+        'field_year_permissions': '/api/v1/plastilin_db/field_year_permissions/'
+    },
+}
+
 
 # Тестовые данные
 TEST_CULTURES = {

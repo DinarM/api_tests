@@ -1,14 +1,42 @@
 """
 Хелперы для API операций
 """
-from typing import Dict, Any
 import time
+
+
+class NullValue:
+    """
+    Специальный класс для явного указания null значений в API запросах
+    """
+    def __repr__(self):
+        return 'NullValue()'
 
 
 class APIHelper:
     """
     Класс с полезными методами для API операций
     """
+    
+    @staticmethod
+    def filter_none_values(data: dict) -> dict:
+        """
+        Удаляет из словаря все ключи со значением None, но оставляет NullValue
+        
+        Args:
+            data: Исходный словарь
+            
+        Returns:
+            dict: Словарь без None значений, но с NullValue
+        """
+        result = {}
+        for key, value in data.items():
+            if value is None:
+                continue  # Пропускаем None
+            elif isinstance(value, NullValue):
+                result[key] = None  # NullValue превращаем в None для JSON
+            else:
+                result[key] = value
+        return result
     
     @staticmethod
     def retry_request(func, max_retries: int = 3, delay: float = 1.0):

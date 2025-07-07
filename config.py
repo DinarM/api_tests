@@ -27,17 +27,21 @@ def get_base_url(env=None):
 
 CREDENTIALS = {
     'stage': {
-        'employee': {
-            'username': 'dinar_test',
-            'password': 'q1w2e3r4T%'
+        'employee_company_1': {
+            'username': 'QA_user_1_div_1',
+            'password': 'x1210Lozcw0yEwxYuyjg'
         },
-        'head': {
-            'username': 'head_stage',
-            'password': 'head_pass'
+        'head_of_division_company_1': {
+            'username': 'QA_head_of_div_1',
+            'password': 'R5YDvyMJeDYI88cpRFe0'
         },
-        'ceo': {
-            'username': 'ceo_stage',
-            'password': 'ceo_pass'
+        'head_of_company_company_1': {
+            'username': 'QA_head_of_company',
+            'password': 'XgdcDzc5oj0owLN2pAti'
+        },
+        'super_admin': {
+            'username': 'super_admin',
+            'password': 'super_admin_pass'
         }
     },
     'dev': {

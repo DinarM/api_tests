@@ -1,9 +1,11 @@
 import pytest
 from playwright.sync_api import sync_playwright
 from api.plastilin_db.plastilin_db_api import PlastilinDbApi
+from api.users.users_api import UsersApi
 from config import get_base_url, get_credentials
-from utils.api.api_helpers import APIHelper
+from utils.api.api_helpers import APIHelper, NullValue
 from utils.api.data_helpers import DataHelper
+from utils.api.constants import API_ENDPOINTS
 
 def pytest_addoption(parser):
     """
@@ -42,6 +44,10 @@ def plastilin_db_api(api_context):
     return PlastilinDbApi(api_context)
 
 @pytest.fixture
+def users_api(api_context):
+    return UsersApi(api_context)
+
+@pytest.fixture
 def get_token(api_context, env):
     def _get_token(role='employee'):
         creds = get_credentials(env, role)
@@ -52,7 +58,7 @@ def get_token(api_context, env):
         headers = {
             'Content-Type': 'application/json'
         }
-        response = api_context.post('/api/v1/login/',
+        response = api_context.post(API_ENDPOINTS['auth']['login'],
                                     data=payload,
                                     headers=headers)
         response_data = response.json()
@@ -81,3 +87,18 @@ def api_helper():
     Фикстура для API хелперов
     """
     return APIHelper()
+
+@pytest.fixture
+def null_value():
+    """
+    Фикстура для создания NullValue объекта для явного указания null в API запросах
+    
+    Пример использования:
+    api.create_field_year_permissions(
+        token=token, 
+        year_id=123, 
+        name=null_value(),  # Передаст {"name": null}
+        read=null_value()   # Передаст {"read": null}
+    )
+    """
+    return NullValue()

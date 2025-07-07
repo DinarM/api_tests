@@ -1,6 +1,8 @@
 from api.base_api import BaseAPI
 import uuid
-from typing import Dict
+from typing import Dict, Optional
+from utils.api.constants import API_ENDPOINTS
+from utils.api.api_helpers import APIHelper
 
 
 class SpeciesTableAPI(BaseAPI):
@@ -15,13 +17,13 @@ class SpeciesTableAPI(BaseAPI):
         """
         headers = self.headers.copy()
         headers['Authorization'] = token
-        return self.context.get('/api/v1/plastilin_db/species_table/', headers=headers)
+        return self.context.get(API_ENDPOINTS['species_table']['list'], headers=headers)
 
     def create_species_table(
         self, 
         token: str, 
-        english_name: str = f'Сulture_{uuid.uuid4().hex[:8]}', 
-        russian_name: str = f'Культура_{uuid.uuid4().hex[:8]}'
+        russian_name: str = f'Культура_{uuid.uuid4().hex[:8]}',
+        english_name: Optional[str] = None, 
         ) -> Dict:
         """
         Создание записи в species_table через POST-запрос
@@ -40,6 +42,8 @@ class SpeciesTableAPI(BaseAPI):
         payload = {
             'english_name': english_name,
             'russian_name': russian_name
-        }
-        
-        return self.context.post('/api/v1/plastilin_db/species_table/', data=payload, headers=headers)
+        }  
+
+        payload = APIHelper.filter_none_values(payload)
+
+        return self.context.post(API_ENDPOINTS['plastilin_db']['species_table'], data=payload, headers=headers)
