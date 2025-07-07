@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "spec_id": {
+      "type": "integer",
+      "description": "ID спецификации"
+    },
+    "english_name": {
+      "type": ["string", "null"],
+      "description": "Английское название"
+    },
+    "russian_name": {
+      "type": "string",
+      "description": "Русское название"
+    },
+    "species": {
+      "type": ["string", "null"],
+      "description": "Вид"
+    }
+  },
+  "required": ["spec_id", "russian_name"],
+  "additionalProperties": false
+} 

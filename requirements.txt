@@ -1,3 +1,4 @@
 pytest
 playwright
+jsonschema==4.19.2
 

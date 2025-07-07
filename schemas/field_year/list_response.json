@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "patternProperties": {
+    "^[0-9]+$": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "year_id": { "type": "integer" },
+          "spec_id": { "type": "integer" },
+          "field_id": { "type": "integer" },
+          "field_name": { "type": "string" },
+          "company_id": { "type": "integer" },
+          "division_id": { "type": "integer" },
+          "user_id": { "type": "integer" },
+          "region": { "type": "string" }
+        },
+        "required": [
+          "year_id",
+          "spec_id",
+          "field_id",
+          "field_name",
+          "company_id",
+          "division_id",
+          "user_id",
+          "region"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "spec_id": {
+            "type": "integer"
+          },
+          "english_name": {
+            "type": ["string", "null"]
+          },
+          "russian_name": {
+            "type": "string"
+          },
+          "species": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["spec_id", "russian_name"]
+      }
+    },
+    "count": {
+      "type": "integer"
+    }
+  },
+  "required": ["data"]
+} 
