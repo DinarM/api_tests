@@ -3,15 +3,20 @@
 """
 
 API_ENDPOINTS = {
+    'auth': {
+        'login': '/api/v1/login/'
+    },
     'users': {
         'companies': '/api/v1/users/companies/',
         'users_by_company_id': '/api/v1/users/users_by_company_id/',
-        'users_groups': '/api/v1/users/users_groups/'
+        'users_groups': '/api/v1/users/users_groups/',
+        'company_structure': '/api/v1/users/company_structure/',
     },
     'plastilin_db': {
         'field_year': '/api/v1/plastilin_db/field_year/',
         'species_table': '/api/v1/plastilin_db/species_table/',
-        'field_year_permissions': '/api/v1/plastilin_db/field_year_permissions/'
+        'field_year_permissions': '/api/v1/plastilin_db/field_year_permissions/',
+        'user_groups_with_fields': '/api/v1/plastilin_db/user_groups_with_fields/'
     },
 }
 

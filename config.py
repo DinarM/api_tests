@@ -40,8 +40,12 @@ CREDENTIALS = {
             'password': 'XgdcDzc5oj0owLN2pAti'
         },
         'super_admin': {
-            'username': 'super_admin',
-            'password': 'super_admin_pass'
+            'username': 'aqa_admin',
+            'password': 'q1w2e3r4T%'
+        },
+        'standalone_user': {
+            'username': 'dinar_test',
+            'password': 'q1w2e3r4T%'
         }
     },
     'dev': {

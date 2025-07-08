@@ -1,0 +1,53 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      },
+      "read": {
+        "type": "boolean"
+      },
+      "write": {
+        "type": "boolean"
+      },
+      "creator_id": {
+        "type": "integer"
+      },
+      "users": {
+        "type": "array",
+        "items": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "username": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "username",
+              "role"
+            ]
+          }
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "read",
+      "write",
+      "creator_id",
+      "users"
+    ]
+  }

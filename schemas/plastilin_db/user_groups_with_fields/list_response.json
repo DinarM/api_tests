@@ -1,0 +1,98 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "items": [
+      {
+        "type": "object",
+        "properties": {
+          "user_group_id": {
+            "type": "integer"
+          },
+          "user_group_name": {
+            "type": "string"
+          },
+          "user_group_read": {
+            "type": "boolean"
+          },
+          "user_group_write": {
+            "type": "boolean"
+          },
+          "user_group_creator_id": {
+            "type": "integer"
+          },
+          "users": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "company_id": {
+                    "type": "integer"
+                  },
+                  "company_name": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "username",
+                  "company_id",
+                  "company_name",
+                  "role"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "company_id": {
+                    "type": "integer"
+                  },
+                  "company_name": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "username",
+                  "company_id",
+                  "company_name",
+                  "role"
+                ]
+              }
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {}
+          }
+        },
+        "required": [
+          "user_group_id",
+          "user_group_name",
+          "user_group_read",
+          "user_group_write",
+          "user_group_creator_id",
+          "users",
+          "fields"
+        ]
+      }
+    ]
+  }

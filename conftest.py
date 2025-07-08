@@ -49,8 +49,11 @@ def users_api(api_context):
 
 @pytest.fixture
 def get_token(api_context, env):
-    def _get_token(role='employee'):
-        creds = get_credentials(env, role)
+    def _get_token(role='standalone_user'):
+        try:
+            creds = get_credentials(env, role)
+        except Exception as e:
+            pytest.skip(f'Роль {role} недоступна: {e}')
         payload = {
             'username': creds['username'],
             'password': creds['password']
@@ -61,8 +64,12 @@ def get_token(api_context, env):
         response = api_context.post(API_ENDPOINTS['auth']['login'],
                                     data=payload,
                                     headers=headers)
-        response_data = response.json()
-        print(response_data)
+        try:
+            response_data = response.json()
+        except Exception:
+            print('Ошибка авторизации! Ответ сервера:')
+            print(response.text())
+            raise
         return f"Bearer {response_data['access']}"
     return _get_token
 
@@ -75,11 +82,11 @@ def schema_validator():
     return SchemaValidator()
 
 @pytest.fixture
-def data_helper(plastilin_db_api):
+def data_helper(plastilin_db_api, users_api):
     """
     Фикстура для работы с данными
     """
-    return DataHelper(plastilin_db_api)
+    return DataHelper(plastilin_db_api, users_api)
 
 @pytest.fixture
 def api_helper():

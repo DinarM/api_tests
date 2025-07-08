@@ -16,13 +16,15 @@ class TestFieldYearGet:
 
         response = plastilin_db_api.get_field_year(token=token, spec_id=spec_id)
 
+        print(response.json())
+
         assert response.status == HTTPStatus.OK
 
         response_data = response.json()
 
         schema_validator.assert_valid_response(
             response_data, 
-            'field_year/list_response.json',
+            'plastilin_db/field_year/list_response.json',
             'Получение списка полевых годов'
         )
 

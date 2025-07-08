@@ -17,7 +17,7 @@ class SpeciesTableAPI(BaseAPI):
         """
         headers = self.headers.copy()
         headers['Authorization'] = token
-        return self.context.get(API_ENDPOINTS['species_table']['list'], headers=headers)
+        return self.context.get(API_ENDPOINTS['plastilin_db']['species_table'], headers=headers)
 
     def create_species_table(
         self, 

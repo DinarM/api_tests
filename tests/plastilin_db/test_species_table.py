@@ -28,7 +28,7 @@ class TestSpeciesTableCreate:
 
         schema_validator.assert_valid_response(
             response_data, 
-            'species_table/create_response.json',
+            'plastilin_db/species_table/create_response.json',
             'Создание записи с максимальной длиной'
         )
 
@@ -52,7 +52,7 @@ class TestSpeciesTableCreate:
 
         schema_validator.assert_valid_response(
             response_data, 
-            'species_table/create_response.json',
+            'plastilin_db/species_table/create_response.json',
             'Создание записи с обязательными полями'
         )
 
@@ -81,6 +81,6 @@ class TestSpeciesTableGet:
 
         schema_validator.assert_valid_response(
             response_data, 
-            'species_table/list_response.json',
+            'plastilin_db/species_table/list_response.json',
             'Получение списка записей'
         )

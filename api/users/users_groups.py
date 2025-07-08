@@ -6,7 +6,7 @@ from utils.api.api_helpers import APIHelper
 
 class UsersGroupsApi(BaseAPI):
 
-    def create_users_group(self, token: str, name: str, read: Optional[bool] = None, write: Optional[bool] = None) -> Dict:
+    def create_users_groups(self, token: str, name: str, read: Optional[bool] = None, write: Optional[bool] = None) -> Dict:
         headers = self.headers.copy()
         headers['Authorization'] = token
         payload = {
