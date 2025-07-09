@@ -46,11 +46,11 @@ class UsersGroupsApi(BaseAPI):
         headers['Authorization'] = token
         return self.context.delete(API_ENDPOINTS['users']['users_groups'] + f'{group_id}/', headers=headers)
 
-    def add_user_to_group(self, token: str, user_group_id: int, user_id: int) -> Dict:
+    def invite_user_to_group(self, token: str, user_group_id: int, user_id: int) -> Dict:
         headers = self.headers.copy()
         headers['Authorization'] = token
         payload = {
             'user_group_id': user_group_id,
             'user_id': user_id
         }
-        return self.context.post(API_ENDPOINTS['users']['users_groups'] + '/invite/', headers=headers, data=payload)
+        return self.context.post(API_ENDPOINTS['users']['users_groups'] + 'invite/', headers=headers, data=payload)

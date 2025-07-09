@@ -63,7 +63,53 @@ class SchemaValidator:
         try:
             self.validate_response(data, schema_path)
         except ValidationError as e:
-            error_msg = f'Валидация по схеме {schema_path} не прошла: {e.message}'
+            # Формируем детальное сообщение об ошибке
+            error_details = []
+            
+            # Путь к проблемному полю
+            if e.path:
+                field_path = ' -> '.join(str(p) for p in e.path)
+                error_details.append(f'Поле: {field_path}')
+            
+            # Сообщение об ошибке
+            error_details.append(f'Ошибка: {e.message}')
+            
+            # Ожидаемое значение (если есть)
+            if hasattr(e, 'validator_value') and e.validator_value is not None:
+                error_details.append(f'Ожидалось: {e.validator_value}')
+            
+            # Фактическое значение (если есть)
+            if hasattr(e, 'instance') and e.instance is not None:
+                error_details.append(f'Получено: {e.instance}')
+            
+            # Тип валидатора (что проверялось)
+            if hasattr(e, 'validator') and e.validator:
+                validator_name = e.validator
+                if validator_name == 'required':
+                    error_details.append('Проверка: обязательное поле')
+                elif validator_name == 'type':
+                    error_details.append('Проверка: тип данных')
+                elif validator_name == 'format':
+                    error_details.append('Проверка: формат данных')
+                elif validator_name == 'pattern':
+                    error_details.append('Проверка: регулярное выражение')
+                elif validator_name == 'minLength':
+                    error_details.append('Проверка: минимальная длина')
+                elif validator_name == 'maxLength':
+                    error_details.append('Проверка: максимальная длина')
+                elif validator_name == 'minimum':
+                    error_details.append('Проверка: минимальное значение')
+                elif validator_name == 'maximum':
+                    error_details.append('Проверка: максимальное значение')
+                elif validator_name == 'enum':
+                    error_details.append('Проверка: допустимые значения')
+                else:
+                    error_details.append(f'Проверка: {validator_name}')
+            
+            # Собираем все детали
+            detailed_error = f'Валидация по схеме {schema_path} не прошла:\n' + '\n'.join(f'  • {detail}' for detail in error_details)
+            
             if message:
-                error_msg += f' | {message}'
-            raise AssertionError(error_msg) 
+                detailed_error += f'\n  • Контекст: {message}'
+            
+            raise AssertionError(detailed_error) 

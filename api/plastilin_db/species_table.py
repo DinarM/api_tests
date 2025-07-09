@@ -1,5 +1,4 @@
 from api.base_api import BaseAPI
-import uuid
 from typing import Dict, Optional
 from utils.api.constants import API_ENDPOINTS
 from utils.api.api_helpers import APIHelper
@@ -22,7 +21,7 @@ class SpeciesTableAPI(BaseAPI):
     def create_species_table(
         self, 
         token: str, 
-        russian_name: str = f'Культура_{uuid.uuid4().hex[:8]}',
+        russian_name: str,
         english_name: Optional[str] = None, 
         ) -> Dict:
         """

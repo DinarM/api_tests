@@ -11,12 +11,15 @@ API_ENDPOINTS = {
         'users_by_company_id': '/api/v1/users/users_by_company_id/',
         'users_groups': '/api/v1/users/users_groups/',
         'company_structure': '/api/v1/users/company_structure/',
+        'profile': '/api/v1/users/profile/'
     },
     'plastilin_db': {
         'field_year': '/api/v1/plastilin_db/field_year/',
         'species_table': '/api/v1/plastilin_db/species_table/',
         'field_year_permissions': '/api/v1/plastilin_db/field_year_permissions/',
-        'user_groups_with_fields': '/api/v1/plastilin_db/user_groups_with_fields/'
+        'user_groups_with_fields': '/api/v1/plastilin_db/user_groups_with_fields/',
+        'field_year_add': '/api/v1/plastilin_db/field_year_add/',
+        'field_table': '/api/v1/plastilin_db/field_table/'
     },
 }
 
@@ -35,6 +38,10 @@ TEST_CULTURES = {
         'english_name': 'Soybean',
         'russian_name': 'Соя'
     }
+}
+
+REGIONS = {
+    'Амурская область': 'Амурская область',
 }
 
 # Таймауты

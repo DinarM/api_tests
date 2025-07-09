@@ -1,5 +1,7 @@
 from http import HTTPStatus
 
+from utils.api.constants import TEST_CULTURES
+
 
 class TestFieldYearGet:
     """
@@ -12,7 +14,7 @@ class TestFieldYearGet:
         """
         token = get_token()
 
-        spec_id = data_helper.get_or_create_spec_id_by_name(token=token, russian_name='Тестовая культура для проверки')
+        spec_id = data_helper.get_or_create_spec_id_by_name(token=token, russian_name=TEST_CULTURES['wheat']['russian_name'])
 
         response = plastilin_db_api.get_field_year(token=token, spec_id=spec_id)
 

@@ -1,0 +1,93 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "user_data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "patronymic": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "null"
+          },
+          "contact_telephone": {
+            "type": "string"
+          },
+          "extra_information": {
+            "type": "string"
+          },
+          "division": {
+            "type": "integer"
+          },
+          "is_head_of_company": {
+            "type": "boolean"
+          },
+          "is_head_of_division": {
+            "type": "boolean"
+          },
+          "countries": {
+            "type": "array",
+            "items": [
+              {
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "email",
+          "first_name",
+          "last_name",
+          "patronymic",
+          "birthday",
+          "contact_telephone",
+          "extra_information",
+          "division",
+          "is_head_of_company",
+          "is_head_of_division",
+          "countries"
+        ]
+      },
+      "count_of_lines": {
+        "type": "integer"
+      },
+      "count_of_plots": {
+        "type": "integer"
+      },
+      "count_of_fields": {
+        "type": "integer"
+      },
+      "count_of_brushes": {
+        "type": "integer"
+      },
+      "count_of_lines_of_divisions": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "user_data",
+      "count_of_lines",
+      "count_of_plots",
+      "count_of_fields",
+      "count_of_brushes",
+      "count_of_lines_of_divisions"
+    ]
+  }

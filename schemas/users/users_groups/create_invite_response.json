@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "user_group_id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "read": {
+      "type": "boolean"
+    },
+    "write": {
+      "type": "boolean"
+    },
+    "creator_id": {
+      "type": "integer"
+    },
+    "users": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "username": {
+              "type": "string"
+            },
+            "company_id": {
+              "type": "integer"
+            },
+            "company_name": {
+              "type": "string"
+            },
+            "division_id": {
+              "type": "integer"
+            },
+            "division_name": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "username",
+            "company_id",
+            "company_name",
+            "division_id",
+            "division_name",
+            "role"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "username": {
+              "type": "string"
+            },
+            "company_id": {
+              "type": "integer"
+            },
+            "company_name": {
+              "type": "string"
+            },
+            "division_id": {
+              "type": "integer"
+            },
+            "division_name": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "username",
+            "company_id",
+            "company_name",
+            "division_id",
+            "division_name",
+            "role"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "user_group_id",
+    "name",
+    "read",
+    "write",
+    "creator_id",
+    "users"
+  ]
+}

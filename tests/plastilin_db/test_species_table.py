@@ -7,14 +7,13 @@ class TestSpeciesTableCreate:
     Тесты создания записей в таблице видов (species_table)
     """
     
-    def test_create_species_table_max_length(self, get_token, plastilin_db_api, schema_validator):
+    def test_create_species_table_max_length(self, get_token, plastilin_db_api, schema_validator, data_helper):
         """
         Тест создания записи с максимальной длиной полей (255 символов)
         """
         token = get_token()
 
-        unique_suffix = uuid.uuid4().hex[:8]
-        max_length_string = 'a' * 247 + unique_suffix
+        max_length_string = data_helper.generate_random_string(length=255)
         
         response = plastilin_db_api.create_species_table(
             token=token,
@@ -35,7 +34,7 @@ class TestSpeciesTableCreate:
         assert response_data['english_name'] == max_length_string
         assert response_data['russian_name'] == max_length_string.capitalize()
 
-    def test_create_species_table_required_fields_only(self, get_token, plastilin_db_api, schema_validator):
+    def test_create_species_table_required_fields_only(self, get_token, plastilin_db_api, schema_validator, data_helper):
         """
         Тест создания записи только с обязательными полями
         """
@@ -43,6 +42,7 @@ class TestSpeciesTableCreate:
         
         response = plastilin_db_api.create_species_table(
             token=token,
+            russian_name=data_helper.generate_random_string(name='Культура_'),
             english_name=None
         )
         

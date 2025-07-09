@@ -1,0 +1,575 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "items": [
+      {
+        "type": "object",
+        "properties": {
+          "field_id": {
+            "type": "integer"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "company_id": {
+            "type": "integer"
+          },
+          "division": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "integer"
+          },
+          "region": {
+            "type": "string"
+          },
+          "subregion": {
+            "type": "null"
+          },
+          "english_name_region": {
+            "type": "string"
+          },
+          "fieldyear_set": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "field_id",
+          "field_name",
+          "company_id",
+          "division",
+          "user",
+          "region",
+          "subregion",
+          "english_name_region",
+          "fieldyear_set"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "field_id": {
+            "type": "integer"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "company_id": {
+            "type": "integer"
+          },
+          "division": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "integer"
+          },
+          "region": {
+            "type": "string"
+          },
+          "subregion": {
+            "type": "null"
+          },
+          "english_name_region": {
+            "type": "string"
+          },
+          "fieldyear_set": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "field_id",
+          "field_name",
+          "company_id",
+          "division",
+          "user",
+          "region",
+          "subregion",
+          "english_name_region",
+          "fieldyear_set"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "field_id": {
+            "type": "integer"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "company_id": {
+            "type": "integer"
+          },
+          "division": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "integer"
+          },
+          "region": {
+            "type": "string"
+          },
+          "subregion": {
+            "type": "null"
+          },
+          "english_name_region": {
+            "type": "string"
+          },
+          "fieldyear_set": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "field_id",
+          "field_name",
+          "company_id",
+          "division",
+          "user",
+          "region",
+          "subregion",
+          "english_name_region",
+          "fieldyear_set"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "field_id": {
+            "type": "integer"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "company_id": {
+            "type": "integer"
+          },
+          "division": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "integer"
+          },
+          "region": {
+            "type": "string"
+          },
+          "subregion": {
+            "type": "null"
+          },
+          "english_name_region": {
+            "type": "string"
+          },
+          "fieldyear_set": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "field_id",
+          "field_name",
+          "company_id",
+          "division",
+          "user",
+          "region",
+          "subregion",
+          "english_name_region",
+          "fieldyear_set"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "field_id": {
+            "type": "integer"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "company_id": {
+            "type": "integer"
+          },
+          "division": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "integer"
+          },
+          "region": {
+            "type": "string"
+          },
+          "subregion": {
+            "type": "null"
+          },
+          "english_name_region": {
+            "type": "string"
+          },
+          "fieldyear_set": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "field_id",
+          "field_name",
+          "company_id",
+          "division",
+          "user",
+          "region",
+          "subregion",
+          "english_name_region",
+          "fieldyear_set"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "field_id": {
+            "type": "integer"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "company_id": {
+            "type": "integer"
+          },
+          "division": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "integer"
+          },
+          "region": {
+            "type": "string"
+          },
+          "subregion": {
+            "type": "null"
+          },
+          "english_name_region": {
+            "type": "string"
+          },
+          "fieldyear_set": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": ["integer", "null"]
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "species": {
+                    "type": "integer"
+                  },
+                  "field_table_info": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "year",
+                  "id",
+                  "species",
+                  "field_table_info"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "field_id",
+          "field_name",
+          "company_id",
+          "division",
+          "user",
+          "region",
+          "subregion",
+          "english_name_region",
+          "fieldyear_set"
+        ]
+      }
+    ]
+  }

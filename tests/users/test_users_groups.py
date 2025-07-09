@@ -59,16 +59,17 @@ class TestUsersGroupsCreateInvite:
     """
     Тесты для создания приглашения в группу пользователей
     """
-    # TODO: дописать тест
     def test_create_users_groups_invite_success(self, get_token, users_api, schema_validator, data_helper):
         """
         Тест успешного создания приглашения в группу пользователей
         """
         token = get_token('head_of_company_company_1')
+        employee_token = get_token('employee_company_1')
         name = data_helper.generate_random_string(name='Test Group')
         group_id = users_api.create_users_groups(token=token, name=name).json().get('id')
-        response = users_api.create_users_groups_invite(token=token, group_id=group_id)
-        assert response.status == HTTPStatus.CREATED
+        employee_user_id = data_helper.get_user_id(token=employee_token)
+        response = users_api.invite_user_to_group(token=token, user_group_id=group_id, user_id=employee_user_id)
+        assert response.status == HTTPStatus.OK
         response_data = response.json()
         schema_validator.assert_valid_response(
             response_data, 
@@ -204,4 +205,23 @@ class TestUsersGroupsPermissions:
         name = data_helper.generate_random_string(name='Test Group')
         group_id = users_api.create_users_groups(token=token, name=name).json().get('id')
         response = users_api.delete_users_group(token=token, group_id=group_id)
+        assert response.status == expected_status
+
+    @pytest.mark.parametrize('role,expected_status', [
+        # ('super_admin', HTTPStatus.OK),  # баг
+        ('head_of_company_company_1', HTTPStatus.OK),
+        ('head_of_division_company_1', HTTPStatus.OK),
+        ('employee_company_1', HTTPStatus.FORBIDDEN),
+        ('standalone_user', HTTPStatus.FORBIDDEN),
+    ])
+    def test_invite_user_to_group_permissions(self, users_api, role, expected_status, get_token, data_helper):
+        """
+        Тест проверки прав доступа к приглашению пользователя в группу
+        """
+        token = get_token(role)
+        employee_token = get_token('employee_company_1')
+        name = data_helper.generate_random_string(name='Test Group')
+        group_id = users_api.create_users_groups(token=token, name=name).json().get('id')
+        employee_user_id = data_helper.get_user_id(token=employee_token)
+        response = users_api.invite_user_to_group(token=token, user_group_id=group_id, user_id=employee_user_id)
         assert response.status == expected_status
