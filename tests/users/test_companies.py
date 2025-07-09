@@ -48,7 +48,6 @@ class TestCompaniesPermissions:
     ])
     def test_get_companies_by_role(self, users_api, role, expected_status, get_token):
         token = get_token(role)
-        print(f'role {role}')
         response = users_api.get_companies(token=token)
         assert response.status == expected_status
 

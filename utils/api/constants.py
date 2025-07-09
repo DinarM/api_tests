@@ -23,6 +23,11 @@ API_ENDPOINTS = {
     },
 }
 
+YEARS = {
+    '2025': 2025,
+    '2026': 2026,
+}
+
 
 # Тестовые данные
 TEST_CULTURES = {
@@ -43,6 +48,15 @@ TEST_CULTURES = {
 REGIONS = {
     'Амурская область': 'Амурская область',
 }
+
+FIELDS = {
+    'field_1': {
+        'field_name': 'Тестовый питомник',
+        'region': REGIONS['Амурская область'],
+        'year': YEARS['2025']
+    }
+}
+
 
 # Таймауты
 TIMEOUTS = {

@@ -1,0 +1,106 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "items": [
+      {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "user_group_id": {
+            "type": "integer"
+          },
+          "user_group_name": {
+            "type": "string"
+          },
+          "user_group_read": {
+            "type": "boolean"
+          },
+          "user_group_write": {
+            "type": "boolean"
+          },
+          "user_group_creator_id": {
+            "type": "integer"
+          },
+          "users": {
+            "type": "array",
+            "items": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "company_id": {
+                    "type": "integer"
+                  },
+                  "company_name": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "username",
+                  "company_id",
+                  "company_name",
+                  "role"
+                ]
+              }
+            ]
+          },
+          "field": {
+            "type": "object",
+            "properties": {
+              "year_id": {
+                "type": "integer"
+              },
+              "field_id": {
+                "type": "integer"
+              },
+              "spec_id": {
+                "type": "integer"
+              },
+              "year": {
+                "type": "integer"
+              },
+              "field_name": {
+                "type": "string"
+              },
+              "field_owner_id": {
+                "type": "integer"
+              },
+              "field_owner_company_id": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "year_id",
+              "field_id",
+              "spec_id",
+              "year",
+              "field_name",
+              "field_owner_id",
+              "field_owner_company_id"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "user_group_id",
+          "user_group_name",
+          "user_group_read",
+          "user_group_write",
+          "user_group_creator_id",
+          "users",
+          "field"
+        ]
+      }
+    ]
+  }

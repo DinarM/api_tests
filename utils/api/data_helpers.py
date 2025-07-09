@@ -34,7 +34,6 @@ class DataHelper:
         if not token or not russian_name:
             raise ValueError('Token и russian_name обязательны')
         
-        # Получаем список всех записей
         response = self.plastilin_db_api.get_species_table(token=token)
         
         if response.status != HTTPStatus.OK:
@@ -43,12 +42,10 @@ class DataHelper:
         data = response.json()
         species_list = data.get('data', [])
         
-        # Ищем существующую запись
         for item in species_list:
             if item.get('russian_name') == russian_name:
                 return item['spec_id']
         
-        # Если не найдено, создаем новую запись
         response = self.plastilin_db_api.create_species_table(
             token=token, 
             russian_name=russian_name
@@ -124,7 +121,7 @@ class DataHelper:
             raise Exception(f'Ошибка получения списка полей: {response.status}')
         
         data = response.json()
-        field_list = data.get([])
+        field_list = data
 
         region = REGIONS['Амурская область']
 
@@ -139,3 +136,12 @@ class DataHelper:
             return created_data.get('field_id')
         else:
             raise Exception(f'Ошибка создания питомника: {response.status}')
+
+    def get_or_create_spec_field_year_id(self, token: str, spec_name: str, field_name: str, year: int) -> Optional[int]:
+        """
+        Получает ID культуры, питомника и года для текущего пользователя
+        """
+        spec_id = self.get_or_create_spec_id_by_name(token=token, russian_name=spec_name)
+        field_id = self.get_or_create_field_id_by_name(token=token, spec_id=spec_id, field_name=field_name)
+        year_id = self.get_or_create_year_id(token=token, year=year, spec_id=spec_id, field_id=field_id)
+        return spec_id, field_id, year_id
