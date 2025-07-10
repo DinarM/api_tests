@@ -2,6 +2,7 @@ from api.base_api import BaseAPI
 from typing import Dict, Optional
 from utils.api.constants import API_ENDPOINTS
 from utils.api.api_helpers import APIHelper
+from playwright.sync_api import APIResponse
 
 
 class FieldYearPermissionsApi(BaseAPI):
@@ -14,7 +15,7 @@ class FieldYearPermissionsApi(BaseAPI):
         name: Optional[str] = None, 
         read: Optional[bool] = None, 
         write: Optional[bool] = None
-    ) -> Dict:
+    ) -> APIResponse:
         """
         Создание разрешений для полевого года
         
@@ -29,7 +30,6 @@ class FieldYearPermissionsApi(BaseAPI):
         headers = self.headers.copy()
         headers['Authorization'] = token
         
-        # Формируем payload и фильтруем None значения
         payload = {
             'year_id': year_id,
             'user_group_id': user_group_id,
@@ -41,17 +41,17 @@ class FieldYearPermissionsApi(BaseAPI):
             
         return self.context.post(API_ENDPOINTS['plastilin_db']['field_year_permissions'], headers=headers, data=payload)
     
-    def get_field_year_permissions(self, token: str) -> Dict:
+    def get_field_year_permissions(self, token: str) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         return self.context.get(API_ENDPOINTS['plastilin_db']['field_year_permissions'], headers=headers)
     
-    def get_field_year_permissions_by_id(self, token: str, field_year_permission_id: int) -> Dict:
+    def get_field_year_permissions_by_id(self, token: str, field_year_permission_id: int) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         return self.context.get(API_ENDPOINTS['plastilin_db']['field_year_permissions'] + f'{field_year_permission_id}/', headers=headers)
 
-    def update_field_year_permissions(self, token: str, field_year_permission_id: int, name: Optional[str] = None, read: Optional[bool] = None, write: Optional[bool] = None) -> Dict:
+    def update_field_year_permissions(self, token: str, field_year_permission_id: int, name: Optional[str] = None, read: Optional[bool] = None, write: Optional[bool] = None) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         payload = {
@@ -62,12 +62,12 @@ class FieldYearPermissionsApi(BaseAPI):
         payload = APIHelper.filter_none_values(payload)
         return self.context.put(API_ENDPOINTS['plastilin_db']['field_year_permissions'] + f'{field_year_permission_id}/', headers=headers, data=payload)
 
-    def delete_field_year_permissions(self, token: str, field_year_permission_id: int) -> Dict:
+    def delete_field_year_permissions(self, token: str, field_year_permission_id: int) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         return self.context.delete(API_ENDPOINTS['plastilin_db']['field_year_permissions'] + f'{field_year_permission_id}/', headers=headers)
     
-    def add_user_to_field_year_permissions(self, token: str, field_year_permission_id: int, user_id: int) -> Dict:
+    def add_user_to_field_year_permissions(self, token: str, field_year_permission_id: int, user_id: int) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         payload = {

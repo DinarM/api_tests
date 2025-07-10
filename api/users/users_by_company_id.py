@@ -1,10 +1,10 @@
 from api.base_api import BaseAPI
-from typing import Dict
+from playwright.sync_api import APIResponse
 from utils.api.constants import API_ENDPOINTS
 
 
 class UsersByCompanyIdApi(BaseAPI):
-    def get_users_by_company_id(self, company_id: int, token: str) -> Dict:
+    def get_users_by_company_id(self, company_id: int, token: str) -> APIResponse:
         """
         Получение списка пользователей по ID компании
         """

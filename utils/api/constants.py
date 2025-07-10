@@ -19,11 +19,13 @@ API_ENDPOINTS = {
         'field_year_permissions': '/api/v1/plastilin_db/field_year_permissions/',
         'user_groups_with_fields': '/api/v1/plastilin_db/user_groups_with_fields/',
         'field_year_add': '/api/v1/plastilin_db/field_year_add/',
-        'field_table': '/api/v1/plastilin_db/field_table/'
+        'field_table': '/api/v1/plastilin_db/field_table/',
+        'perform_t_test_multiple': '/api/v1/plastilin_db/perform_t_test_multiple/'
     },
 }
 
 YEARS = {
+    '2023': 2023,
     '2025': 2025,
     '2026': 2026,
 }
@@ -35,18 +37,15 @@ TEST_CULTURES = {
         'english_name': 'Wheat',
         'russian_name': 'Пшеница'
     },
-    'corn': {
-        'english_name': 'Corn',
-        'russian_name': 'Кукуруза'
+    'barley': {
+        'english_name': 'Barley',
+        'russian_name': 'Ячмень' # для массива данных
     },
-    'soybean': {
-        'english_name': 'Soybean',
-        'russian_name': 'Соя'
-    }
 }
 
 REGIONS = {
     'Амурская область': 'Амурская область',
+    'Краснодарский край': 'Краснодарский край',
 }
 
 FIELDS = {
@@ -54,6 +53,11 @@ FIELDS = {
         'field_name': 'Тестовый питомник',
         'region': REGIONS['Амурская область'],
         'year': YEARS['2025']
+    },
+    'field_2': { # для массива данных
+        'field_name': 'Конкурсный питомник',
+        'region': REGIONS['Краснодарский край'],
+        'year': YEARS['2023']
     }
 }
 

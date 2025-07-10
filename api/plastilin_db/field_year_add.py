@@ -1,9 +1,9 @@
 from api.base_api import BaseAPI
-from typing import Dict
+from playwright.sync_api import APIResponse
 from utils.api.constants import API_ENDPOINTS
 
 class FieldYearAddApi(BaseAPI):
-    def add_field_year(self, token: str, field_id: int, year: int, spec_id: int) -> Dict:
+    def add_field_year(self, token: str, field_id: int, year: int, spec_id: int) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         payload = {

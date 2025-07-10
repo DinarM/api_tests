@@ -1,9 +1,6 @@
-"""
-Хелперы для работы с данными в тестах
-"""
 import uuid
 from http import HTTPStatus
-from typing import Dict, Optional, List
+from typing import Optional, Tuple
 from api.plastilin_db.plastilin_db_api import PlastilinDbApi
 from api.users.users_api import UsersApi
 from utils.api.constants import REGIONS
@@ -33,7 +30,6 @@ class DataHelper:
         """
         if not token or not russian_name:
             raise ValueError('Token и russian_name обязательны')
-        
         response = self.plastilin_db_api.get_species_table(token=token)
         
         if response.status != HTTPStatus.OK:
@@ -63,9 +59,11 @@ class DataHelper:
         Получает ID компании для текущего пользователя
         """
         response = self.users_api.get_company_structure(token=token)
+        if response.status != HTTPStatus.OK:
+            raise Exception(f'Ошибка получения списка компаний: {response.status}')
         return response.json().get('id')
 
-    def generate_random_string(self, name: str = None, length: int = 10) -> str:
+    def generate_random_string(self, name: Optional[str] = None, length: int = 10) -> str:
         """
         Генерирует случайный строковый идентификатор
         """
@@ -81,7 +79,7 @@ class DataHelper:
         response = self.users_api.get_profile(token=token)
         return response.json().get('user_data', {}).get('id')
 
-    def get_or_create_year_id(self, token: str, year: int, spec_id: int, field_id: int) -> Optional[int]:
+    def get_or_create_year_id(self, token: str, year: int, spec_id: int, field_id: int, region: str) -> Optional[int]:
         """
         Получает ID года для текущего пользователя
         """
@@ -97,8 +95,9 @@ class DataHelper:
 
         year_key = str(year)
         if year_key in data:
-            year_data = data[year_key][0]  
-            return year_data.get('year_id')
+            for year_data in data[year_key]:
+                if year_data.get('field_id') == field_id:
+                    return year_data.get('year_id')
         
         response = self.plastilin_db_api.add_field_year(token=token, year=year, spec_id=spec_id, field_id=field_id)
 
@@ -108,7 +107,7 @@ class DataHelper:
         else:
             raise Exception(f'Ошибка создания года: {response.status}')
 
-    def get_or_create_field_id_by_name(self, token: str, spec_id: int, field_name: str) -> Optional[int]:
+    def get_or_create_field_id_by_name(self, token: str, spec_id: int, field_name: str, region: str) -> Optional[int]:
         """
         Получает ID питомника для текущего пользователя
         """
@@ -123,8 +122,6 @@ class DataHelper:
         data = response.json()
         field_list = data
 
-        region = REGIONS['Амурская область']
-
         for item in field_list:
             if item.get('field_name') == field_name and item.get('region') == region:
                 return item.get('field_id')
@@ -137,11 +134,18 @@ class DataHelper:
         else:
             raise Exception(f'Ошибка создания питомника: {response.status}')
 
-    def get_or_create_spec_field_year_id(self, token: str, spec_name: str, field_name: str, year: int) -> Optional[int]:
+    def get_or_create_spec_field_year_id(self, token: str, spec_name: str, field_name: str, year: int, region: str) -> Tuple[Optional[int], Optional[int], Optional[int]]:
         """
         Получает ID культуры, питомника и года для текущего пользователя
         """
         spec_id = self.get_or_create_spec_id_by_name(token=token, russian_name=spec_name)
-        field_id = self.get_or_create_field_id_by_name(token=token, spec_id=spec_id, field_name=field_name)
-        year_id = self.get_or_create_year_id(token=token, year=year, spec_id=spec_id, field_id=field_id)
+        if spec_id is None:
+            raise Exception(f'Не удалось получить или создать spec для имени {spec_name}')
+        field_id = self.get_or_create_field_id_by_name(token=token, spec_id=spec_id, field_name=field_name, region=region)
+        if field_id is None:
+            raise Exception(f'Не удалось получить или создать field для имени {field_name}')
+        year_id = self.get_or_create_year_id(token=token, year=year, spec_id=spec_id, field_id=field_id, region=region)
+        if year_id is None:
+            raise Exception(f'Не удалось получить или создать year для имени {year}')
         return spec_id, field_id, year_id
+    

@@ -1,10 +1,10 @@
 from api.base_api import BaseAPI
-from typing import Dict
+from playwright.sync_api import APIResponse
 from utils.api.constants import API_ENDPOINTS
 
 
 class FieldYearAPI(BaseAPI):
-    def get_field_year(self, token: str, spec_id: int) -> Dict:
+    def get_field_year(self, token: str, spec_id: int) -> APIResponse:
         """
         Получение field_year по spec_id через GET-запрос
         Args:

@@ -1,12 +1,12 @@
 from api.base_api import BaseAPI
-from typing import Dict, Optional
+from typing import Optional
 from utils.api.constants import API_ENDPOINTS
 from utils.api.api_helpers import APIHelper
-
+from playwright.sync_api import APIResponse
 
 class SpeciesTableAPI(BaseAPI):
 
-    def get_species_table(self, token: str) -> Dict:
+    def get_species_table(self, token: str) -> APIResponse:
         """
         Получение species_table через GET-запрос
         Args:
@@ -23,7 +23,7 @@ class SpeciesTableAPI(BaseAPI):
         token: str, 
         russian_name: str,
         english_name: Optional[str] = None, 
-        ) -> Dict:
+        ) -> APIResponse:
         """
         Создание записи в species_table через POST-запрос
         Args:

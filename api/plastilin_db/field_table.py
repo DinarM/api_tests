@@ -1,14 +1,14 @@
 from api.base_api import BaseAPI
-from typing import Dict
+from playwright.sync_api import APIResponse
 from utils.api.constants import API_ENDPOINTS
 
 class FieldTableApi(BaseAPI):
-    def get_field_table(self, token: str, spec_id: int) -> Dict:
+    def get_field_table(self, token: str, spec_id: int) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         return self.context.get(API_ENDPOINTS['plastilin_db']['field_table'], headers=headers, params={'spec_id': spec_id})
 
-    def create_field_table(self, token: str, spec_id: int, field_name: str, region: str) -> Dict:
+    def create_field_table(self, token: str, spec_id: int, field_name: str, region: str) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         payload = {
