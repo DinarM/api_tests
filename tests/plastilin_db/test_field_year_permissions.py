@@ -1,7 +1,6 @@
 from http import HTTPStatus
 import pytest
-from utils.api.constants import TEST_CULTURES
-from utils.api.constants import FIELDS
+from utils.api.constants import TEST_CULTURES, FIELDS
 
 class TestFieldYearPermissionsGet:
     """
