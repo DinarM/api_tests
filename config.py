@@ -13,10 +13,10 @@ CURRENT_ENV = 'stage'
 def get_base_url(env=None):
     """
     Получение базового URL для окружения
-    
+
     Args:
         env: Окружение (если None, используется CURRENT_ENV)
-    
+
     Returns:
         str: Базовый URL
     """
@@ -25,45 +25,29 @@ def get_base_url(env=None):
         raise ValueError(f'Окружение {env} не найдено')
     return ENVIRONMENTS[env]
 
+
 CREDENTIALS = {
     'stage': {
-        'employee_company_1': {
-            'username': 'QA_user_1_div_1',
-            'password': 'x1210Lozcw0yEwxYuyjg'
-        },
+        'employee_company_1': {'username': 'QA_user_1_div_1', 'password': 'x1210Lozcw0yEwxYuyjg'},
         'head_of_division_company_1': {
             'username': 'QA_head_of_div_1',
-            'password': 'R5YDvyMJeDYI88cpRFe0'
+            'password': 'R5YDvyMJeDYI88cpRFe0',
         },
         'head_of_company_company_1': {
             'username': 'QA_head_of_company',
-            'password': 'XgdcDzc5oj0owLN2pAti'
+            'password': 'XgdcDzc5oj0owLN2pAti',
         },
-        'super_admin': {
-            'username': 'aqa_admin',
-            'password': 'q1w2e3r4T%'
-        },
-        'standalone_user': {
-            'username': 'dinar_test',
-            'password': 'q1w2e3r4T%'
-        }
+        'super_admin': {'username': 'aqa_admin', 'password': 'q1w2e3r4T%'},
+        'standalone_user': {'username': 'dinar_test', 'password': 'q1w2e3r4T%'},
     },
     'dev': {
-        'employee': {
-            'username': 'employee_dev',
-            'password': 'employee_pass'
-        },
-        'head': {
-            'username': 'head_dev',
-            'password': 'head_pass'
-        },
-        'ceo': {
-            'username': 'ceo_dev',
-            'password': 'ceo_pass'
-        }
-    }
+        'employee': {'username': 'employee_dev', 'password': 'employee_pass'},
+        'head': {'username': 'head_dev', 'password': 'head_pass'},
+        'ceo': {'username': 'ceo_dev', 'password': 'ceo_pass'},
+    },
     # Добавляйте другие окружения по необходимости
 }
+
 
 def get_credentials(env=None, role='employee'):
     """
@@ -81,4 +65,4 @@ def get_credentials(env=None, role='employee'):
         raise ValueError(f'Нет кредов для окружения {env}')
     if role not in CREDENTIALS[env]:
         raise ValueError(f'Нет кредов для роли {role} в окружении {env}')
-    return CREDENTIALS[env][role] 
+    return CREDENTIALS[env][role]

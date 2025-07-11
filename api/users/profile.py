@@ -1,6 +1,8 @@
-from api.base_api import BaseAPI
 from playwright.sync_api import APIResponse
+
+from api.base_api import BaseAPI
 from utils.api.constants import API_ENDPOINTS
+
 
 class ProfileApi(BaseAPI):
     def get_profile(self, token: str) -> APIResponse:
