@@ -1,3 +1,4 @@
+import re
 import uuid
 from http import HTTPStatus
 from typing import Optional, Tuple
@@ -149,3 +150,43 @@ class DataHelper:
             raise Exception(f'Не удалось получить или создать year для имени {year}')
         return spec_id, field_id, year_id
     
+
+    @staticmethod
+    def universal_sort_key(s, reverse=False):
+        """
+        Возвращает ключ для универсальной сортировки строк, чисел и None значений.
+        Поддерживает естественную сортировку строк с цифрами.
+        
+        Args:
+            s: Строка, число или None для сортировки
+            reverse: Если True, None значения будут в начале, иначе в конце
+            
+        Returns:
+            tuple: (буквенная_часть, числовая_часть) для сортировки
+        """
+        # Обрабатываем None значения
+        if s is None:
+            if reverse:
+                return ('', -999999)  # None значения будут в начале при reverse=True
+            else:
+                return ('zzzzzzzzzz', 999999)  # None значения будут в конце при reverse=False
+        
+        # Обрабатываем числовые значения
+        if isinstance(s, (int, float)):
+            return ('', s)  # Обычная сортировка чисел
+        
+        # Нормализуем строку (заменяем ё на е)
+        s_norm = s.replace('ё', 'е').replace('Ё', 'Е')
+        
+        # Ищем паттерн: буквы + цифры в конце
+        m = re.match(r'(\D+?)(\d+)$', s_norm.strip())
+        if m:
+            prefix, num = m.groups()
+            num_val = int(num)
+            if reverse:
+                return (prefix.lower(), -num_val)  # Обратная сортировка чисел в строках
+            else:
+                return (prefix.lower(), num_val)  # Обычная сортировка чисел в строках
+        
+        # Если нет цифр в конце, возвращаем всю строку как буквенную часть
+        return (s_norm.lower(), 0)
