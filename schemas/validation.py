@@ -4,7 +4,7 @@
 
 import json
 import os
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from jsonschema import ValidationError, validate
 
@@ -53,7 +53,7 @@ class SchemaValidator:
         validate(instance=data, schema=schema)
         return True
 
-    def assert_valid_response(self, data: Any, schema_path: str, message: str = None):
+    def assert_valid_response(self, data: Any, schema_path: str, message: Optional[str] = None):
         """
         Assert для валидации с понятным сообщением об ошибке
 
@@ -62,6 +62,13 @@ class SchemaValidator:
             schema_path: Путь к файлу схемы
             message: Дополнительное сообщение
         """
+        # Проверка на пустой ответ
+        if not data:
+            error_msg = f'Ответ пустой! Схема: {schema_path}'
+            if message:
+                error_msg += f' Контекст: {message}'
+            raise AssertionError(error_msg)
+
         try:
             self.validate_response(data, schema_path)
         except ValidationError as e:

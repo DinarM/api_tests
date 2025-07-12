@@ -1,3 +1,4 @@
+from api.plastilin_db.cross_avg_values_multiple import CrossAvgValuesMultipleAPI
 from api.plastilin_db.field_table import FieldTableApi
 from api.plastilin_db.field_year import FieldYearAPI
 from api.plastilin_db.field_year_add import FieldYearAddApi
@@ -15,6 +16,7 @@ class PlastilinDbApi(
     FieldTableApi,
     FieldYearAddApi,
     PerformTTestMultipleAPI,
+    CrossAvgValuesMultipleAPI,
 ):
     """Общий клиент, собирающий все части plastilin_db API."""
 

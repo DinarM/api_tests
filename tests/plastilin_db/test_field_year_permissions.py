@@ -159,7 +159,7 @@ class TestFieldYearPermissionsUpdate:
             response_data,
             'plastilin_db/field_year_permissions/update_response.json',
         )
-        response_data.get('name') == new_name
+        assert response_data.get('name') == new_name
 
 
 class TestFieldYearPermissionsDelete:
@@ -175,7 +175,7 @@ class TestFieldYearPermissionsDelete:
         Тест успешного удаления разрешений на полевые годы
         """
         token = get_token('head_of_company_company_1')
-        spec_id, field_id, year_id = data_helper.get_or_create_spec_field_year_id(
+        _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
             field_name=FIELDS['field_1']['field_name'],

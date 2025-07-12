@@ -23,7 +23,7 @@ class FieldYearPermissionsApi(BaseAPI):
         Args:
             token: Bearer токен
             year_id: ID года (обязательное)
-            user_group_id: ID группы пользователей (None = не передавать, NullValue() = передать null)
+            user_group_id: ID группы пользователей (None = не передавать, NullValue() = null)
             name: Название (None = не передавать, NullValue() = передать null)
             read: Право на чтение (None = не передавать, NullValue() = передать null)
             write: Право на запись (None = не передавать, NullValue() = передать null)

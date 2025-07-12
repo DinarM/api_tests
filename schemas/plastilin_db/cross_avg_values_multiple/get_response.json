@@ -1,0 +1,92 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "field_id": {
+          "type": "number"
+        },
+        "field_name": {
+          "type": "string"
+        },
+        "year": {
+          "type": "number"
+        },
+        "region_id": {
+          "type": "number"
+        },
+        "region": {
+          "type": "string"
+        },
+        "year_id": {
+          "type": "number"
+        },
+        "plot_name": {
+          "type": "string"
+        },
+        "line_name": {
+          "type": "string"
+        },
+        "plot_data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "plot_id": {
+                "type": "number"
+              },
+              "line_id": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "plot_id",
+              "line_id"
+            ]
+          }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "feature": {
+                "type": "string"
+              },
+              "avg_value": {},
+              "rank": {
+                "type": ["number", "null"]
+              },
+              "nsr": {
+                "type": ["number", "null"]
+              },
+              "significance": {
+                "type": ["boolean", "null"]
+              },
+              "color": {
+                "type": ["string", "null"]
+              }
+            },
+            "required": [
+              "feature",
+              "avg_value"
+            ]
+          }
+        }
+      },
+      "required": [
+        "field_id",
+        "field_name",
+        "year",
+        "region_id",
+        "region",
+        "year_id",
+        "plot_name",
+        "line_name",
+        "plot_data",
+        "features"
+      ]
+    }
+  }

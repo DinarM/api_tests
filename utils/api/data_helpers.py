@@ -202,3 +202,29 @@ class DataHelper:
 
         # Если нет цифр в конце, возвращаем всю строку как буквенную часть
         return (s_norm.lower(), 0)
+
+    def get_multiple_values_from_response(
+        self, response_data: list, name_of_multiple: str, feature: str
+    ) -> list:
+        """
+        Извлекает значения из ответа API для фильтрации multiple параметров
+
+        Args:
+            response_data: Данные ответа от API
+            name_of_multiple: Название поля для извлечения
+            feature: Название feature для поиска в features
+
+        Returns:
+            list: Список значений для проверки
+        """
+        if name_of_multiple in ['line_name', 'plot_name']:
+            return [item[name_of_multiple] for item in response_data]
+        else:
+            return [
+                next(
+                    feat[name_of_multiple]
+                    for feat in item['features']
+                    if feat.get('feature') == feature
+                )
+                for item in response_data
+            ]

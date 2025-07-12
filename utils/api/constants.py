@@ -19,6 +19,7 @@ API_ENDPOINTS = {
         'field_year_add': '/api/v1/plastilin_db/field_year_add/',
         'field_table': '/api/v1/plastilin_db/field_table/',
         'perform_t_test_multiple': '/api/v1/plastilin_db/perform_t_test_multiple/',
+        'cross_avg_values_multiple': '/api/v1/plastilin_db/cross_avg_values_multiple/',
     },
 }
 
@@ -56,6 +57,21 @@ FIELDS = {
     },
 }
 
+FEATURES = {
+    'созревание бобов': 'созревание бобов',
+    'размер бобов': 'размер бобов',
+}
+
+CONTROL_PLOT = {
+    'д 100': 'д 100',
+}   
+
+STATISTICAL_FEATURES = {
+    'T-test': {
+        'feature': FEATURES['созревание бобов'],
+        'control_plot': CONTROL_PLOT['д 100'],
+    },
+}
 
 # Таймауты
 TIMEOUTS = {'short': 5.0, 'medium': 15.0, 'long': 30.0}
