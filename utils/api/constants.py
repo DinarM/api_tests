@@ -20,6 +20,7 @@ API_ENDPOINTS = {
         'field_table': '/api/v1/plastilin_db/field_table/',
         'perform_t_test_multiple': '/api/v1/plastilin_db/perform_t_test_multiple/',
         'cross_avg_values_multiple': '/api/v1/plastilin_db/cross_avg_values_multiple/',
+        'field_maps': '/api/v1/plastilin_db/field_maps/',
     },
 }
 

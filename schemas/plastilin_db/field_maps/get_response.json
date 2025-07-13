@@ -1,0 +1,102 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "field_maps",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "field": {
+          "type": "number"
+        },
+        "year": {
+          "type": "number"
+        },
+        "location_of_plots": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {}
+          }
+        },
+        "max_length_per_list": {
+          "type": "number"
+        },
+        "meta_info": {
+          "type": "object",
+          "properties": {
+            "count_of_lines": {
+              "type": "number"
+            },
+            "count_of_plots": {
+              "type": "number"
+            },
+            "sprouted_plots": {
+              "type": "number"
+            },
+            "avg_days_after_sowing": {
+              "type": "number"
+            },
+            "features": {
+              "type": "object",
+              "properties": {
+                "белок в семенах": {
+                  "type": "number"
+                },
+                "текстура семян": {
+                  "type": "number"
+                },
+                "тип стебля": {
+                  "type": "number"
+                },
+                "устойчивость к болезням": {
+                  "type": "number"
+                },
+                "цвет семян": {
+                  "type": "number"
+                },
+                "высота растения": {
+                  "type": "number"
+                },
+                "размер бобов": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "белок в семенах",
+                "текстура семян",
+                "тип стебля",
+                "устойчивость к болезням",
+                "цвет семян",
+                "высота растения",
+                "размер бобов"
+              ]
+            },
+            "harvest_technologies": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          },
+          "required": [
+            "count_of_lines",
+            "count_of_plots",
+            "sprouted_plots",
+            "avg_days_after_sowing",
+            "features",
+            "harvest_technologies"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "field",
+        "year",
+        "location_of_plots",
+        "max_length_per_list",
+        "meta_info"
+      ]
+    }
+  }
