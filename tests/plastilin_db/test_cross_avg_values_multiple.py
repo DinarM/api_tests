@@ -21,7 +21,10 @@ class TestCrossAvgValuesMultipleGet:
         control_plot = STATISTICAL_FEATURES['T-test']['control_plot']
         control_plot_year_id = year_id
         response = plastilin_db_api.get_cross_avg_values_multiple(
-            token=token, year_ids=year_ids, control_plot=control_plot, control_plot_year_id=control_plot_year_id
+            token=token,
+            year_ids=year_ids,
+            control_plot=control_plot,
+            control_plot_year_id=control_plot_year_id,
         )
         assert response.status == HTTPStatus.OK
         response_data = response.json()

@@ -1,12 +1,12 @@
 from http import HTTPStatus
 
-import pytest
-
 from utils.api.constants import FIELDS, TEST_CULTURES
 
 
 class TestFieldMapsGet:
-    def test_field_maps_get_success(self, get_token, plastilin_db_api, data_helper, schema_validator):
+    def test_field_maps_get_success(
+        self, get_token, plastilin_db_api, data_helper, schema_validator
+    ):
         token = get_token('head_of_company_company_1')
         _, field_id, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
