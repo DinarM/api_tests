@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "plot_id": {
+          "type": "number"
+        },
+        "plot_name": {
+          "type": "string"
+        },
+        "line_name": {
+          "type": "string"
+        },
+        "width": {},
+        "length": {},
+        "year_id": {
+          "type": "number"
+        },
+        "year": {
+          "type": "number"
+        },
+        "plot_label": {}
+      },
+      "required": [
+        "plot_id",
+        "plot_name",
+        "line_name",
+        "width",
+        "length",
+        "year_id",
+        "year",
+        "plot_label"
+      ]
+    }
+  }

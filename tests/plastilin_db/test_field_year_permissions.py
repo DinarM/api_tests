@@ -98,7 +98,7 @@ class TestFieldYearPermissionsCreateInvite:
         token = get_token('head_of_company_company_1')
         employee_token = get_token('employee_company_1')
         user_id = data_helper.get_user_id(token=employee_token)
-        spec_id, field_id, year_id = data_helper.get_or_create_spec_field_year_id(
+        _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
             field_name=FIELDS['field_1']['field_name'],

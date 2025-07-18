@@ -176,31 +176,29 @@ class DataHelper:
         Returns:
             tuple: (буквенная_часть, числовая_часть) для сортировки
         """
-        # Обрабатываем None значения
         if s is None:
             if reverse:
-                return ('', -999999)  # None значения будут в начале при reverse=True
+                return ('', -999999)
             else:
-                return ('zzzzzzzzzz', 999999)  # None значения будут в конце при reverse=False
+                return ('zzzzzzzzzz', 999999)
 
         # Обрабатываем числовые значения
         if isinstance(s, (int, float)):
-            return ('', s)  # Обычная сортировка чисел
+            return ('', s)
 
         # Нормализуем строку (заменяем ё на е)
         s_norm = s.replace('ё', 'е').replace('Ё', 'Е')
 
-        # Ищем паттерн: буквы + цифры в конце
-        m = re.match(r'(\D+?)(\d+)$', s_norm.strip())
-        if m:
-            prefix, num = m.groups()
-            num_val = int(num)
-            if reverse:
-                return (prefix.lower(), -num_val)  # Обратная сортировка чисел в строках
-            else:
-                return (prefix.lower(), num_val)  # Обычная сортировка чисел в строках
+        # # Пока решили не использовать сортировку по цифрам в конце строки
+        # m = re.match(r'(\D+?)(\d+)$', s_norm.strip())
+        # if m:
+        #     prefix, num = m.groups()
+        #     num_val = int(num)
+        #     if reverse:
+        #         return (prefix.lower(), -num_val)
+        #     else:
+        #         return (prefix.lower(), num_val)
 
-        # Если нет цифр в конце, возвращаем всю строку как буквенную часть
         return (s_norm.lower(), 0)
 
     def get_multiple_values_from_response(

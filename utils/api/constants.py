@@ -21,10 +21,14 @@ API_ENDPOINTS = {
         'perform_t_test_multiple': '/api/v1/plastilin_db/perform_t_test_multiple/',
         'cross_avg_values_multiple': '/api/v1/plastilin_db/cross_avg_values_multiple/',
         'field_maps': '/api/v1/plastilin_db/field_maps/',
+        'field_map_coloring_data': '/api/v1/plastilin_db/field_map_coloring_data/',
+        'plot_table': '/api/v1/plastilin_db/plot_table/',
+        'calculate_nsr_multiple': '/api/v1/plastilin_db/calculate_nsr_multiple/',
     },
 }
 
 YEARS = {
+    '2022': 2022,
     '2023': 2023,
     '2025': 2025,
     '2026': 2026,
@@ -56,15 +60,22 @@ FIELDS = {
         'region': REGIONS['Краснодарский край'],
         'year': YEARS['2023'],
     },
+    'field_3': {
+        'field_name': 'Контрольный питомник',
+        'region': REGIONS['Краснодарский край'],
+        'year': YEARS['2022'],
+    },
 }
 
 FEATURES = {
     'созревание бобов': 'созревание бобов',
     'размер бобов': 'размер бобов',
+    'белок в семенах': 'белок в семенах',
 }
 
 CONTROL_PLOT = {
     'д 100': 'д 100',
+    'д 147': 'д 147',
 }   
 
 STATISTICAL_FEATURES = {
@@ -72,6 +83,19 @@ STATISTICAL_FEATURES = {
         'feature': FEATURES['созревание бобов'],
         'control_plot': CONTROL_PLOT['д 100'],
     },
+    'NSR': {
+        'feature': FEATURES['размер бобов'],
+        'control_plot': CONTROL_PLOT['д 147'],
+    },
+    'CROSS_AVG': {
+        'feature': FEATURES['белок в семенах'],
+        'control_plot': CONTROL_PLOT['д 100'],
+    },
+
+}
+
+REPETITIONS = {
+    '10': 10,
 }
 
 # Таймауты

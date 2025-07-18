@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "field_map_coloring_data",
+    "type": "object",
+    "properties": {
+      "harvest_technology": {
+        "type": "array",
+        "items": {}
+      },
+      "plot_stage": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "plot_final_results": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "harvest_technology",
+      "plot_stage",
+      "plot_final_results"
+    ]
+  }
