@@ -2,6 +2,8 @@
 Константы для тестов
 """
 
+from pathlib import Path
+
 API_ENDPOINTS = {
     'auth': {'login': '/api/v1/login/'},
     'users': {
@@ -24,6 +26,7 @@ API_ENDPOINTS = {
         'field_map_coloring_data': '/api/v1/plastilin_db/field_map_coloring_data/',
         'plot_table': '/api/v1/plastilin_db/plot_table/',
         'calculate_nsr_multiple': '/api/v1/plastilin_db/calculate_nsr_multiple/',
+        'plot_result': '/api/v1/plastilin_db/upload_custom_file/plot_result/',
     },
 }
 
@@ -97,6 +100,8 @@ STATISTICAL_FEATURES = {
 REPETITIONS = {
     '10': 10,
 }
+
+TEST_DATA_PATH = Path(__file__).parent.parent.parent / 'utils' / 'data'
 
 # Таймауты
 TIMEOUTS = {'short': 5.0, 'medium': 15.0, 'long': 30.0}

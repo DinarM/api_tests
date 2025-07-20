@@ -8,6 +8,7 @@ from api.plastilin_db.field_year import FieldYearAPI
 from api.plastilin_db.field_year_add import FieldYearAddApi
 from api.plastilin_db.field_year_permissions import FieldYearPermissionsApi
 from api.plastilin_db.perform_t_test_multiple import PerformTTestMultipleAPI
+from api.plastilin_db.plot_result import PlotResultAPI
 from api.plastilin_db.plot_table import PlotTableAPI
 from api.plastilin_db.species_table import SpeciesTableAPI
 from api.plastilin_db.user_groups_with_fields import UserGroupsWithFieldsApi
@@ -27,6 +28,7 @@ class PlastilinDbApi(
     PlotTableAPI,
     CombinedPlotFieldLineGenealogyAPI,
     CalculateNSRMultipleAPI,
+    PlotResultAPI,
 ):
     """Общий клиент, собирающий все части plastilin_db API."""
     pass

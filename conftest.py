@@ -1,3 +1,5 @@
+# import os
+
 import pytest
 from playwright.sync_api import sync_playwright
 
@@ -7,6 +9,8 @@ from config import get_base_url, get_credentials
 from utils.api.api_helpers import APIHelper, NullValue
 from utils.api.constants import API_ENDPOINTS
 from utils.api.data_helpers import DataHelper
+
+# os.environ['DEBUG'] = 'pw:api'  # Включает логирование API запросов
 
 
 def pytest_addoption(parser):
@@ -30,7 +34,7 @@ def env(request):
 def api_context(env):
     playwright = sync_playwright().start()
     context = playwright.request.new_context(
-        base_url=get_base_url(env), extra_http_headers={'Content-Type': 'application/json'}
+        base_url=get_base_url(env)
     )
     yield context
     context.dispose()
