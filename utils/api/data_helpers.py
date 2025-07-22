@@ -1,16 +1,15 @@
-import uuid
-import tempfile
-import string
 import random
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Optional, Tuple, Dict, List, Any
-from openpyxl import Workbook
-from openpyxl.worksheet.worksheet import Worksheet
-from http import HTTPStatus
 
-from api.plastilin_db.plastilin_db_api import PlastilinDbApi
-from api.users.users_api import UsersApi
+# import tempfile
+import uuid
+from datetime import datetime, timedelta
+from http import HTTPStatus
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
+
 from utils.api.constants import TEST_DATA_PATH
 
 
@@ -19,7 +18,7 @@ class DataHelper:
     Класс с полезными методами для работы с данными
     """
 
-    def __init__(self, plastilin_db_api: PlastilinDbApi, users_api: UsersApi):
+    def __init__(self, plastilin_db_api, users_api):
         self.plastilin_db_api = plastilin_db_api
         self.users_api = users_api
 
@@ -46,9 +45,11 @@ class DataHelper:
 
         data = response.json()
         species_list = data.get('data', [])
+        # print(species_list)
 
         for item in species_list:
-            if item.get('russian_name') == russian_name:
+            if item['russian_name'].strip() == russian_name.strip():
+                print(f'item: {item}')
                 return item['spec_id']
 
         response = self.plastilin_db_api.create_species_table(
@@ -57,6 +58,7 @@ class DataHelper:
 
         if response.status == HTTPStatus.CREATED:
             created_data = response.json()
+            print(created_data['spec_id'])
             return created_data['spec_id']
         else:
             raise Exception(f'Ошибка создания культуры: {response.status}')
@@ -240,7 +242,6 @@ class DataHelper:
         if field_type == 'float':
             return round(random.uniform(0, 100), 2)
         elif field_type == 'date':
-            # Генерируем дату в рамках текущего года
             current_year = datetime.now().year
             start_date = datetime(current_year, 1, 1)
             end_date = datetime(current_year, 12, 31)
@@ -249,70 +250,6 @@ class DataHelper:
             random_date = start_date + timedelta(days=random_days)
             return random_date.strftime('%Y-%m-%d')
         return self.generate_random_string('Тестовое значение', length=6)
-
-    def generate_plot_result_api_data(
-        self,
-        field_name: str,
-        year: int,
-        region: str,
-        base_plot_name: str,
-        row_count: int = 10,
-        repeats: int = 1,
-        phenotypic_fields: Optional[List[Dict[str, str]]] = None,
-        dev_stage_fields: Optional[List[Dict[str, str]]] = None,
-    ) -> List[Dict[str, Any]]:
-        """
-        Генерирует данные для API в формате ключ-значение
-        
-        Args:
-            field_name: Название питомника
-            year: Год
-            region: Регион
-            base_plot_name: Базовое название делянки
-            row_count: Количество записей на повторность
-            repeats: Количество повторностей
-            phenotypic_fields: [{'name': 'Высота растения', 'type': 'float', 'unit': 'см'}, ...]
-            dev_stage_fields: [{'name': 'Развертывание первых листьев', 'type': 'date'}, ...]
-            
-        Returns:
-            List[Dict] с данными в формате API
-        """
-        phenotypic_fields = phenotypic_fields or []
-        dev_stage_fields = dev_stage_fields or []
-        
-        api_data = []
-        
-        for repeat in range(1, repeats + 1):
-            for plot_num in range(1, row_count + 1):
-                # Генерируем данные для одной записи
-                plot_results = []
-                for field in phenotypic_fields:
-                    value = self._generate_field_value(field['type'])
-                    plot_results.append({
-                        "plot_final_feature": field['name'].lower(),
-                        "plot_final_value": str(value),
-                        "plot_final_unit": field.get('unit', '')
-                    })
-                
-                plot_stages = []
-                for field in dev_stage_fields:
-                    value = self._generate_field_value(field['type'])
-                    plot_stages.append({
-                        "stage_of_vegetation": field['name'].lower(),
-                        "date_of_stage": value
-                    })
-                
-                # Формируем основную запись
-                record = {
-                    "plot_name": f"{base_plot_name} {plot_num}/{repeat}",
-                    "line_name": f"Сорт {plot_num}",
-                    "plot_results": plot_results,
-                    "plot_stages": plot_stages
-                }
-                
-                api_data.append(record)
-        
-        return api_data
 
     def generate_plot_result_data(
         self,
@@ -364,7 +301,10 @@ class DataHelper:
         dev_stage_fields = dev_stage_fields or []
         
         # Формируем заголовки для Excel
-        headers = ['Название питомника', 'Год', 'Регион', 'Название делянки', 'Название сорта', 'Номер повторности']
+        headers = [
+            'Название питомника', 'Год', 'Регион', 'Название делянки', 
+            'Название сорта', 'Номер повторности'
+        ]
         
         # Формируем заголовки фенотипов
         phenotypic_names = []
@@ -389,8 +329,12 @@ class DataHelper:
         for repeat in range(1, repeats + 1):
             for plot_num in range(1, row_count + 1):
                 # Генерируем значения для текущей записи
-                phenotypic_values = [self._generate_field_value(f['type']) for f in phenotypic_fields]
-                dev_stage_values = [self._generate_field_value(f['type']) for f in dev_stage_fields]
+                phenotypic_values = [
+                    self._generate_field_value(f['type']) for f in phenotypic_fields
+                ]
+                dev_stage_values = [
+                    self._generate_field_value(f['type']) for f in dev_stage_fields
+                ]
                 
                 # Формируем строку для Excel
                 excel_row = [
@@ -428,8 +372,6 @@ class DataHelper:
                     "plot_stages": plot_stages
                 }
                 api_data.append(api_record)
-
-        print(api_data)
         
         return {
             'excel': {
@@ -450,17 +392,145 @@ class DataHelper:
             'api': api_data
         }
 
+    def update_plot_result_data(
+        self,
+        plot_data: Dict[str, Any],
+        modifications: Optional[List[Dict[str, Any]]] = None,
+        add_columns: Optional[List[Dict[str, Any]]] = None,
+        remove_columns: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Обновляет данные в обоих форматах (Excel и API)
+        
+        Args:
+            plot_data: Данные из generate_plot_result_data
+            modifications: Список изменений значений
+                [
+                    {
+                        'row_index': 0,
+                        'excel_column': 'Фенотип;Высота растения; см',
+                        'api_field': 'высота растения',
+                        'new_value': 150.5
+                    }
+                ]
+            add_columns: Список новых колонок для добавления
+                [
+                    {
+                        'excel_header': 'Фенотип;Новый признак; шт',
+                        'api_field': 'новый признак',
+                        'api_unit': 'шт',
+                        'type': 'float',
+                        'default_value': 10.0
+                    }
+                ]
+            remove_columns: Список колонок для удаления
+                ['Фенотип;Устойчивость к болезням;']
+        """
+        updated_data = plot_data.copy()
+        
+        # Обновляем Excel данные
+        excel_data = updated_data['excel'].copy()
+        excel_data['data'] = [row.copy() for row in excel_data['data']]
+        
+        # Обновляем API данные
+        api_data = updated_data['api'].copy()
+        
+        # Удаляем колонки
+        if remove_columns:
+            for col_to_remove in remove_columns:
+                # Удаляем из Excel
+                if col_to_remove in excel_data['headers']:
+                    col_index = excel_data['headers'].index(col_to_remove)
+                    excel_data['headers'].pop(col_index)
+                    for row in excel_data['data']:
+                        row.pop(col_index)
+                
+                # Удаляем из API
+                for record in api_data:
+                    # Удаляем из plot_results
+                    record['plot_results'] = [
+                        result for result in record['plot_results']
+                        if (result['plot_final_feature'] != 
+                            col_to_remove.split(';')[1].strip().lower())
+                    ]
+                    # Удаляем из plot_stages
+                    record['plot_stages'] = [
+                        stage for stage in record['plot_stages']
+                        if (stage['stage_of_vegetation'] != 
+                            col_to_remove.split(';')[1].strip().lower())
+                    ]
+        
+        # Добавляем колонки
+        if add_columns:
+            for new_col in add_columns:
+                excel_header = new_col['excel_header']
+                api_field = new_col['api_field']
+                api_unit = new_col.get('api_unit', '')
+                col_type = new_col.get('type', 'string')
+                default_value = new_col.get('default_value', '')
+                
+                # Добавляем в Excel
+                excel_data['headers'].append(excel_header)
+                for row in excel_data['data']:
+                    if col_type == 'float':
+                        row.append(default_value)
+                    else:
+                        row.append(default_value)
+                
+                # Добавляем в API
+                for record in api_data:
+                    if excel_header.startswith('Фенотип;'):
+                        record['plot_results'].append({
+                            "plot_final_feature": api_field,
+                            "plot_final_value": str(default_value),
+                            "plot_final_unit": api_unit
+                        })
+                    elif excel_header.startswith('Стадия развития;'):
+                        record['plot_stages'].append({
+                            "stage_of_vegetation": api_field,
+                            "date_of_stage": default_value
+                        })
+        
+        # Обновляем значения
+        if modifications:
+            for mod in modifications:
+                row_index = mod.get('row_index', 0)
+                excel_column = mod.get('excel_column', '')
+                api_field = mod.get('api_field', '')
+                new_value = mod.get('new_value')
+                
+                # Обновляем Excel данные
+                if row_index < len(excel_data['data']) and excel_column:
+                    try:
+                        col_index = excel_data['headers'].index(excel_column)
+                        excel_data['data'][row_index][col_index] = new_value
+                    except ValueError:
+                        print(f"Колонка '{excel_column}' не найдена в Excel")
+                
+                # Обновляем API данные
+                if row_index < len(api_data) and api_field:
+                    record = api_data[row_index]
+                    
+                    # Ищем в plot_results
+                    for result in record['plot_results']:
+                        if result['plot_final_feature'] == api_field:
+                            result['plot_final_value'] = str(new_value)
+                            break
+                    
+                    # Ищем в plot_stages
+                    for stage in record['plot_stages']:
+                        if stage['stage_of_vegetation'] == api_field:
+                            stage['date_of_stage'] = new_value
+                            break
+        
+        updated_data['excel'] = excel_data
+        updated_data['api'] = api_data
+        
+        return updated_data
+
     def create_plot_result_excel(
         self,
-        plot_data: Optional[Dict[str, Any]] = None,
-        field_name: Optional[str] = None,
-        year: Optional[int] = None,
-        region: Optional[str] = None,
-        base_plot_name: Optional[str] = None,
-        row_count: int = 10,
-        repeats: int = 1,
-        phenotypic_fields: Optional[List[Dict[str, str]]] = None,
-        dev_stage_fields: Optional[List[Dict[str, str]]] = None,
+        plot_data: Dict[str, Any],
     ) -> Tuple[Path, str]:
         """
         Создает Excel файл для результатов делянок
@@ -470,18 +540,6 @@ class DataHelper:
             field_name, year, region, base_plot_name: Параметры для генерации данных
             row_count, repeats, phenotypic_fields, dev_stage_fields: Параметры для генерации
         """
-        # Используем готовые данные или генерируем новые
-        if plot_data is None:
-            plot_data = self.generate_plot_result_data(
-                field_name=field_name,
-                year=year,
-                region=region,
-                base_plot_name=base_plot_name,
-                row_count=row_count,
-                repeats=repeats,
-                phenotypic_fields=phenotypic_fields,
-                dev_stage_fields=dev_stage_fields
-            )
         
         # Извлекаем Excel данные
         excel_data = plot_data['excel']
@@ -489,20 +547,31 @@ class DataHelper:
         # Создаем Excel
         wb = Workbook()
         ws = wb.active
-        ws.title = 'Результаты'
+        if ws is None:
+            ws = wb.create_sheet('Результаты')
+        else:
+            ws.title = 'Результаты'
         
         # Записываем заголовки
         for col, header in enumerate(excel_data['headers'], 1):
             ws.cell(row=1, column=col, value=header)
-            ws.column_dimensions[ws.cell(row=1, column=col).column_letter].width = 20
+            letter = get_column_letter(col)
+            ws.column_dimensions[letter].width = 20
         
         # Записываем данные
         for row_data in excel_data['data']:
             ws.append(row_data)
         
         # Сохраняем файл
-        filename = f"{excel_data['metadata']['base_plot_name']}_{excel_data['metadata']['field_name']}_{excel_data['metadata']['year']}.xlsx"
-        path = Path(tempfile.gettempdir()) / filename
+        filename = (
+            f"{excel_data['metadata']['base_plot_name']}_"
+            f"{excel_data['metadata']['field_name']}_"
+            f"{excel_data['metadata']['year']}_"
+            f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+        )
+        # TODO: remove this
+        # path = Path(tempfile.gettempdir()) / filename
+        path = TEST_DATA_PATH / filename
         wb.save(path)
         wb.close()
         

@@ -27,6 +27,8 @@ API_ENDPOINTS = {
         'plot_table': '/api/v1/plastilin_db/plot_table/',
         'calculate_nsr_multiple': '/api/v1/plastilin_db/calculate_nsr_multiple/',
         'plot_result': '/api/v1/plastilin_db/upload_custom_file/plot_result/',
+        'combined_plot_field_line_genealogy':
+            '/api/v1/plastilin_db/combined_plot_field_line_genealogy/',
     },
 }
 
@@ -97,22 +99,33 @@ STATISTICAL_FEATURES = {
 
 }
 
+PLOT_RESULT_FIELDS = {
+    'field_name': 'Конкурсный питомник',
+    'year': YEARS['2023'],
+    'region': REGIONS['Краснодарский край'],
+    'base_plot_name': 'Делянка',
+    'row_count': 5,
+    'repeats': 3,
+    'phenotypic_fields': [
+        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+        {'name': 'Устойчивость к болезням', 'type': 'string'},
+    ],
+    'dev_stage_fields': [
+        {'name': 'Развертывание первых листьев', 'type': 'date'},
+        {'name': 'Фаза дозревания', 'type': 'date'},
+    ],
+}
+
+
 REPETITIONS = {
     '10': 10,
 }
 
 TEST_DATA_PATH = Path(__file__).parent.parent.parent / 'utils' / 'data'
 
-# Таймауты
-TIMEOUTS = {'short': 5.0, 'medium': 15.0, 'long': 30.0}
-
-# Статусы ответов
-STATUS_CODES = {
-    'ok': 200,
-    'created': 201,
-    'no_content': 204,
-    'bad_request': 400,
-    'unauthorized': 401,
-    'not_found': 404,
-    'server_error': 500,
+BAD_REQUEST_MESSAGE = {
+    'invalid_credentials': 'Invalid credentials',
+    'auth_locked': 'You have exceeded the allowed number of login attempts',
+    'block_time': 60,
 }
+

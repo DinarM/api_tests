@@ -3,9 +3,11 @@
 import pytest
 from playwright.sync_api import sync_playwright
 
+from api.auth.auth_api import AuthApi
 from api.plastilin_db.plastilin_db_api import PlastilinDbApi
 from api.users.users_api import UsersApi
 from config import get_base_url, get_credentials
+from schemas.validation import SchemaValidator
 from utils.api.api_helpers import APIHelper, NullValue
 from utils.api.constants import API_ENDPOINTS
 from utils.api.data_helpers import DataHelper
@@ -52,7 +54,12 @@ def users_api(api_context):
 
 
 @pytest.fixture
-def get_token(api_context, env):
+def auth_api(api_context):
+    return AuthApi(api_context)
+
+
+@pytest.fixture
+def get_token(api_context, env, get_refresh_token=False):
     def _get_token(role='standalone_user'):
         try:
             creds = get_credentials(env, role)
@@ -67,6 +74,8 @@ def get_token(api_context, env):
             print('Ошибка авторизации! Ответ сервера:')
             print(response.text())
             raise
+        if get_refresh_token:
+            return f'Bearer {response_data["refresh"]}'
         return f'Bearer {response_data["access"]}'
 
     return _get_token
@@ -77,8 +86,6 @@ def schema_validator():
     """
     Фикстура для валидации JSON по схеме
     """
-    from schemas.validation import SchemaValidator
-
     return SchemaValidator()
 
 
