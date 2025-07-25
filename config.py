@@ -28,7 +28,14 @@ def get_base_url(env=None):
 
 CREDENTIALS = {
     'stage': {
-        'employee_company_1': {'username': 'QA_user_1_div_1', 'password': 'x1210Lozcw0yEwxYuyjg'},
+        'employee_company_1': {
+            'username': 'QA_user_1_div_1',
+            'password': 'x1210Lozcw0yEwxYuyjg',
+        },
+        'employee_2_company_1': {
+            'username': 'QA_user_2_div_1',
+            'password': 'g5dsLfRVu6EAf5WEl3h3',
+        },
         'head_of_division_company_1': {
             'username': 'QA_head_of_div_1',
             'password': 'R5YDvyMJeDYI88cpRFe0',

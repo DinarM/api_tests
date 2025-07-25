@@ -126,7 +126,7 @@ class TestPlotTableCreateNegative:
             (None, 'This field is required.'),
         ],
     )
-    def test_plot_table_create_with_empty_plot_name(
+    def test_plot_table_create_with_invalid_plot_name(
         self, get_token, plastilin_db_api, data_helper, plot_name, expected_error
     ):
         token = get_token('standalone_user')
@@ -211,3 +211,36 @@ class TestPlotTableCreateNegative:
         )
         assert response.status == HTTPStatus.BAD_REQUEST
         assert response.json()['repetitions'] == [expected_error]
+
+
+    @pytest.mark.parametrize(
+        'width, length, expected_error',
+        [
+            ('one', 'two', 'A valid number is required.'),
+        ],
+    )
+    def test_plot_table_create_with_invalid_width_and_length(
+        self, get_token, plastilin_db_api, data_helper, width, length, expected_error
+    ):
+        token = get_token('standalone_user')
+        spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
+            token=token,
+            spec_name=TEST_CULTURES['wheat']['russian_name'],
+            field_name=FIELDS['field_1']['field_name'],
+            year=FIELDS['field_1']['year'],
+            region=FIELDS['field_1']['region'],
+        )
+        response = plastilin_db_api.create_plot_table(
+            token=token,
+            plot_name=data_helper.generate_random_string('Тестовая делянка'),
+            field=field_id,
+            year=FIELDS['field_1']['year'],
+            spec_id=spec_id,
+            line_name=data_helper.generate_random_string('Тестовый сорт'),
+            width=width,
+            length=length,
+        )
+        assert response.status == HTTPStatus.BAD_REQUEST
+
+        assert response.json()['width'] == [expected_error]
+        assert response.json()['length'] == [expected_error]

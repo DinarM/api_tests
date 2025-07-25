@@ -1,6 +1,5 @@
 import random
-
-# import tempfile
+import tempfile
 import uuid
 from datetime import datetime, timedelta
 from http import HTTPStatus
@@ -10,7 +9,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
-from utils.api.constants import TEST_DATA_PATH
+# from utils.api.constants import TEST_DATA_PATH
 
 
 class DataHelper:
@@ -45,11 +44,9 @@ class DataHelper:
 
         data = response.json()
         species_list = data.get('data', [])
-        # print(species_list)
 
         for item in species_list:
             if item['russian_name'].strip() == russian_name.strip():
-                print(f'item: {item}')
                 return item['spec_id']
 
         response = self.plastilin_db_api.create_species_table(
@@ -58,7 +55,6 @@ class DataHelper:
 
         if response.status == HTTPStatus.CREATED:
             created_data = response.json()
-            print(created_data['spec_id'])
             return created_data['spec_id']
         else:
             raise Exception(f'Ошибка создания культуры: {response.status}')
@@ -87,6 +83,18 @@ class DataHelper:
         """
         response = self.users_api.get_profile(token=token)
         return response.json().get('user_data', {}).get('id')
+
+    def get_user_ids_by_usernames(self, get_token, usernames):
+        '''
+        Возвращает список user_id по списку username (логинов).
+        '''
+        if not usernames:
+            return None
+        ids = []
+        for username in usernames:
+            token = get_token(username)
+            ids.append(self.get_user_id(token=token))
+        return ids
 
     def get_or_create_year_id(
         self, token: str, year: int, spec_id: int, field_id: int, region: str
@@ -240,7 +248,8 @@ class DataHelper:
     def _generate_field_value(self, field_type: str) -> Any:
         """Генерирует случайное значение для поля по типу"""
         if field_type == 'float':
-            return round(random.uniform(0, 100), 2)
+            value = round(random.uniform(0, 100), 2)
+            return int(value) if value.is_integer() else value
         elif field_type == 'date':
             current_year = datetime.now().year
             start_date = datetime(current_year, 1, 1)
@@ -570,9 +579,59 @@ class DataHelper:
             f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
         )
         # TODO: remove this
-        # path = Path(tempfile.gettempdir()) / filename
-        path = TEST_DATA_PATH / filename
+        path = Path(tempfile.gettempdir()) / filename
+        # path = TEST_DATA_PATH / filename
         wb.save(path)
         wb.close()
         
         return path, filename
+
+    # Сравнивает данные plot_response и plot_data['api']
+    def compare_plot_response_with_api(self, response_data, plot_data):
+        # Проходим по каждому ответу
+        for plot_response in response_data['data']:
+            # Ищем соответствующий plot_api по имени
+            plot_api = next(
+                (p for p in plot_data['api'] if p['plot_name'] == plot_response['plot_name']),
+                None,
+            )
+            assert plot_api is not None
+            assert plot_response['line_name'] == plot_api['line_name']
+
+            # Словари для быстрого поиска по признаку
+            plot_results_by_feature = {
+                r['plot_final_feature']: r for r in plot_api['plot_results']
+            }
+            response_results_by_feature = {
+                r['plot_final_feature']: r for r in plot_response['plot_results']
+            }
+
+            for feature, plot_result in plot_results_by_feature.items():
+                plot_response_result = response_results_by_feature.get(feature)
+                assert plot_response_result is not None
+                # Сравниваем значения как числа
+                assert plot_result['plot_final_value'] == plot_response_result['plot_final_value']
+                assert plot_result['plot_final_unit'] == plot_response_result['plot_final_unit']
+
+            # Аналогично для стадий
+            plot_stages_by_name = {
+                s['stage_of_vegetation'].lower(): s for s in plot_api['plot_stages']
+            }
+            response_stages_by_name = {
+                s['stage_of_vegetation'].lower(): s for s in plot_response['plot_stages']
+            }
+
+            # Находим дату стадии "всходы"
+            sowing_stage = plot_stages_by_name.get('всходы')
+            assert sowing_stage is not None
+            sowing_date = sowing_stage['date_of_stage']
+
+            for stage_name, plot_stage in plot_stages_by_name.items():
+                response_stage = response_stages_by_name.get(stage_name)
+                assert response_stage is not None
+                assert plot_stage['date_of_stage'] == response_stage['date_of_stage']
+                days_after_sowing = (
+                    datetime.strptime(response_stage['date_of_stage'], '%Y-%m-%d') -
+                    datetime.strptime(sowing_date, '%Y-%m-%d')
+                ).days
+                assert int(days_after_sowing) == int(response_stage['days_after_sowing'])

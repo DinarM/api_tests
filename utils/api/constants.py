@@ -111,8 +111,24 @@ PLOT_RESULT_FIELDS = {
         {'name': 'Устойчивость к болезням', 'type': 'string'},
     ],
     'dev_stage_fields': [
+        {'name': 'Всходы', 'type': 'date'},
         {'name': 'Развертывание первых листьев', 'type': 'date'},
         {'name': 'Фаза дозревания', 'type': 'date'},
+    ],
+}
+
+PLOT_RESULT_MODIFICATIONS = {
+    'add_column': [
+        {'name': 'Глубина корневой системы', 'type': 'float', 'unit': 'см'},
+        {'name': 'Урожайность', 'type': 'float', 'unit': 'кг/га'},
+    ],
+    'modify_column': [
+                    {
+                        'row_index': 0,
+                        'excel_column': 'Фенотип;Высота растения; см',
+                        'api_field': 'высота растения',
+                        'new_value': 150.5
+                    }
     ],
 }
 

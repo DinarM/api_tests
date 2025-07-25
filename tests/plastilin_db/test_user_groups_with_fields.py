@@ -34,7 +34,7 @@ class TestUserGroupsWithFieldsGetPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            # ('super_admin', HTTPStatus.OK),  # баг
+            ('super_admin', HTTPStatus.OK),
             ('head_of_company_company_1', HTTPStatus.OK),
             ('head_of_division_company_1', HTTPStatus.OK),
             ('employee_company_1', HTTPStatus.FORBIDDEN),

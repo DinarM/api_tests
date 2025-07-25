@@ -1,53 +1,60 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-      "id": {
-        "type": "integer"
-      },
-      "name": {
-        "type": "string"
-      },
-      "read": {
-        "type": "boolean"
-      },
-      "write": {
-        "type": "boolean"
-      },
-      "creator_id": {
-        "type": "integer"
-      },
-      "users": {
-        "type": "array",
-        "items": [
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer"
-              },
-              "username": {
-                "type": "string"
-              },
-              "role": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "id",
-              "username",
-              "role"
-            ]
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "number"
+    },
+    "name": {
+      "type": "string"
+    },
+    "read": {
+      "type": "boolean"
+    },
+    "write": {
+      "type": "boolean"
+    },
+    "creator_id": {
+      "type": "number"
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "username": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
           }
+        },
+        "required": [
+          "id",
+          "username",
+          "first_name",
+          "last_name",
+          "role"
         ]
       }
-    },
-    "required": [
-      "id",
-      "name",
-      "read",
-      "write",
-      "creator_id",
-      "users"
-    ]
-  }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "read",
+    "write",
+    "creator_id",
+    "users"
+  ]
+}

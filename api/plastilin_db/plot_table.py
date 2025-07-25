@@ -20,6 +20,8 @@ class PlotTableAPI(BaseAPI):
         mother: Optional[str] = None,
         father: Optional[str] = None,
         repetitions: Optional[int] = None,
+        width: Optional[int] = None,
+        length: Optional[int] = None,
     ) -> APIResponse:
         headers = self.headers.copy()
         if token:
@@ -34,6 +36,8 @@ class PlotTableAPI(BaseAPI):
             "mother": mother,
             "father": father,
             "repetitions": repetitions,
+            "width": width,
+            "length": length,
         }
         payload = APIHelper.filter_none_values(payload)
         return self.context.post(
