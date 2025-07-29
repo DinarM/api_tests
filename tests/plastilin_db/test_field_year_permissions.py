@@ -5,18 +5,37 @@ import pytest
 from utils.api.constants import FIELDS, TEST_CULTURES
 
 
+@pytest.fixture(scope='function', autouse=True)
+def cleanup_once_per_module(get_token, data_helper):
+    yield
+    token = get_token('head_of_company_company_1')
+    data_helper.delete_all_field_year_permissions(token=token)
+
+
 class TestFieldYearPermissionsGet:
     """
     Тесты для получения разрешений на полевые годы
     """
 
     def test_get_field_year_permissions_success(
-        self, get_token, plastilin_db_api, schema_validator
+        self, get_token, plastilin_db_api, schema_validator, data_helper
     ):
         """
         Тест успешного получения разрешений на полевые годы
         """
         token = get_token('head_of_company_company_1')
+        _, _, year_id = data_helper.get_or_create_spec_field_year_id(
+            token=token,
+            spec_name=TEST_CULTURES['wheat']['russian_name'],
+            field_name=FIELDS['field_1']['field_name'],
+            year=FIELDS['field_1']['year'],
+            region=FIELDS['field_1']['region'],
+        )
+        plastilin_db_api.create_field_year_permissions(
+            token=token,
+            name=data_helper.generate_random_string(name='Тестовая группа'),
+            year_ids=[year_id],
+        )
         response = plastilin_db_api.get_field_year_permissions(token=token)
         assert response.status == HTTPStatus.OK
         response_data = response.json()
@@ -41,8 +60,8 @@ class TestFieldYearPermissionsGet:
         field_year_permission_id = plastilin_db_api.create_field_year_permissions(
             token=token,
             name=data_helper.generate_random_string(name='Тестовая группа'),
-            year_id=year_id,
-        ).json()['id']
+            year_ids=[year_id],
+        ).json()[0]['id']
         response = plastilin_db_api.get_field_year_permissions_by_id(
             token=token, field_year_permission_id=field_year_permission_id
         )
@@ -75,7 +94,7 @@ class TestFieldYearPermissionsCreate:
         response = plastilin_db_api.create_field_year_permissions(
             token=token,
             name=data_helper.generate_random_string(name='Тестовая группа'),
-            year_id=year_id,
+            year_ids=[year_id],
         )
         assert response.status == HTTPStatus.CREATED
         response_data = response.json()
@@ -84,20 +103,19 @@ class TestFieldYearPermissionsCreate:
         )
 
 
-class TestFieldYearPermissionsCreateInvite:
+
+class TestFieldYearPermissionsUpdate:
     """
-    Тесты для создания приглашения в группу пользователей
+    Тесты для обновления разрешений на полевые годы
     """
 
-    def test_add_user_to_field_year_permissions_success(
+    def test_update_field_year_permissions_success(
         self, get_token, plastilin_db_api, schema_validator, data_helper
     ):
         """
-        Тест успешного создания приглашения в группу пользователей
+        Тест успешного обновления разрешений на полевые годы
         """
         token = get_token('head_of_company_company_1')
-        employee_token = get_token('employee_company_1')
-        user_id = data_helper.get_user_id(token=employee_token)
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -108,47 +126,8 @@ class TestFieldYearPermissionsCreateInvite:
         field_year_permission_id = plastilin_db_api.create_field_year_permissions(
             token=token,
             name=data_helper.generate_random_string(name='Тестовая группа'),
-            year_id=year_id,
-        ).json()['id']
-        response = plastilin_db_api.add_user_to_field_year_permissions(
-            token=token, field_year_permission_id=field_year_permission_id, user_id=user_id
-        )
-        assert response.status == HTTPStatus.OK
-        response_data = response.json()
-        schema_validator.assert_valid_response(
-            response_data, 'plastilin_db/field_year_permissions/create_invite_response.json'
-        )
-        users = response_data.get('users', [])
-        assert any(user['id'] == user_id for user in users), (
-            f'Пользователь с id {user_id} не найден в списке пользователей'
-        )
-
-
-class TestFieldYearPermissionsUpdate:
-    """
-    Тесты для обновления разрешений на полевые годы
-    """
-
-    @pytest.mark.skip(reason='Баг в API')
-    def test_update_field_year_permissions_success(
-        self, get_token, plastilin_db_api, schema_validator, data_helper
-    ):
-        """
-        Тест успешного обновления разрешений на полевые годы
-        """
-        token = get_token('head_of_company_company_1')
-        spec_id, field_id, year_id = data_helper.get_or_create_spec_field_year_id(
-            token=token,
-            spec_name=TEST_CULTURES['wheat']['russian_name'],
-            field_name=FIELDS['field_1']['field_name'],
-            year=FIELDS['field_1']['year'],
-            region=FIELDS['field_1']['region'],
-        )
-        field_year_permission_id = plastilin_db_api.create_field_year_permissions(
-            token=token,
-            name=data_helper.generate_random_string(name='Тестовая группа'),
-            year_id=year_id,
-        ).json()['id']
+            year_ids=[year_id],
+        ).json()[0]['id']
         new_name = data_helper.generate_random_string(name='Новая тестовая группа_')
         response = plastilin_db_api.update_field_year_permissions(
             token=token, field_year_permission_id=field_year_permission_id, name=new_name
@@ -159,7 +138,7 @@ class TestFieldYearPermissionsUpdate:
             response_data,
             'plastilin_db/field_year_permissions/update_response.json',
         )
-        assert response_data.get('name') == new_name
+        assert response_data.get('user_group_name') == new_name
 
 
 class TestFieldYearPermissionsDelete:
@@ -167,9 +146,8 @@ class TestFieldYearPermissionsDelete:
     Тесты для удаления разрешений на полевые годы
     """
 
-    @pytest.mark.skip(reason='Баг в API')
     def test_delete_field_year_permissions_success(
-        self, get_token, plastilin_db_api, schema_validator, data_helper
+        self, get_token, plastilin_db_api, data_helper
     ):
         """
         Тест успешного удаления разрешений на полевые годы
@@ -185,24 +163,19 @@ class TestFieldYearPermissionsDelete:
         field_year_permission_id = plastilin_db_api.create_field_year_permissions(
             token=token,
             name=data_helper.generate_random_string(name='Тестовая группа'),
-            year_id=year_id,
-        ).json()['id']
+            year_ids=[year_id],
+        ).json()[0]['id']
         response = plastilin_db_api.delete_field_year_permissions(
             token=token, field_year_permission_id=field_year_permission_id
         )
-        assert response.status == HTTPStatus.OK
-        # response_data = response.json()
-        # schema_validator.assert_valid_response(
-        #     response_data,
-        #     'plastilin_db/field_year_permissions/delete_response.json'
-        # )
+        assert response.status == HTTPStatus.NO_CONTENT
 
 
 class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            # ('super_admin', HTTPStatus.OK),  # баг
+            ('super_admin', HTTPStatus.OK),  # баг
             ('head_of_company_company_1', HTTPStatus.OK),
             ('head_of_division_company_1', HTTPStatus.OK),
             ('employee_company_1', HTTPStatus.FORBIDDEN),
@@ -210,7 +183,7 @@ class TestFieldYearPermissionsPermissions:
         ],
     )
     def test_get_field_year_permissions_by_role(
-        self, plastilin_db_api, schema_validator, data_helper, role, expected_status, get_token
+        self, plastilin_db_api, role, expected_status, get_token
     ):
         """
         Тест успешного получения разрешений на полевые годы по роли
@@ -222,7 +195,7 @@ class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            # ('super_admin', HTTPStatus.OK),  # баг
+            ('super_admin', HTTPStatus.OK),
             ('head_of_company_company_1', HTTPStatus.OK),
             ('head_of_division_company_1', HTTPStatus.OK),
             ('employee_company_1', HTTPStatus.FORBIDDEN),
@@ -230,7 +203,7 @@ class TestFieldYearPermissionsPermissions:
         ],
     )
     def test_get_field_year_permissions_by_id_by_role(
-        self, plastilin_db_api, schema_validator, data_helper, role, expected_status, get_token
+        self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
         head_of_company_token = get_token('head_of_company_company_1')
@@ -243,9 +216,9 @@ class TestFieldYearPermissionsPermissions:
         )
         field_year_permission_id = plastilin_db_api.create_field_year_permissions(
             token=head_of_company_token,
-            name=data_helper.generate_random_string(name='Тестовая группа_'),
-            year_id=year_id,
-        ).json()['id']
+            name=data_helper.generate_random_string(name='Тестовая группа'),
+            year_ids=[year_id],
+        ).json()[0]['id']
         response = plastilin_db_api.get_field_year_permissions_by_id(
             token=token, field_year_permission_id=field_year_permission_id
         )
@@ -254,7 +227,7 @@ class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            # ('super_admin', HTTPStatus.OK),  # баг
+            ('super_admin', HTTPStatus.CREATED),
             ('head_of_company_company_1', HTTPStatus.CREATED),
             ('head_of_division_company_1', HTTPStatus.CREATED),
             ('employee_company_1', HTTPStatus.FORBIDDEN),
@@ -262,7 +235,7 @@ class TestFieldYearPermissionsPermissions:
         ],
     )
     def test_create_field_year_permissions_by_role(
-        self, plastilin_db_api, schema_validator, data_helper, role, expected_status, get_token
+        self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
         head_of_company_token = get_token('head_of_company_company_1')
@@ -275,50 +248,16 @@ class TestFieldYearPermissionsPermissions:
         )
         response = plastilin_db_api.create_field_year_permissions(
             token=token,
-            name=data_helper.generate_random_string(name='Тестовая группа_'),
-            year_id=year_id,
+            name=data_helper.generate_random_string(name='Тестовая группа'),
+            year_ids=[year_id],
         )
         assert response.status == expected_status
+
 
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            # ('super_admin', HTTPStatus.OK),  # баг
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
-        ],
-    )
-    def test_add_user_to_field_year_permissions_by_role(
-        self, plastilin_db_api, schema_validator, data_helper, role, expected_status, get_token
-    ):
-        token = get_token(role)
-        employee_token = get_token('employee_company_1')
-        user_id = data_helper.get_user_id(token=employee_token)
-        head_of_company_token = get_token('head_of_company_company_1')
-        _, _, year_id = data_helper.get_or_create_spec_field_year_id(
-            token=head_of_company_token,
-            spec_name=TEST_CULTURES['wheat']['russian_name'],
-            field_name=FIELDS['field_1']['field_name'],
-            year=FIELDS['field_1']['year'],
-            region=FIELDS['field_1']['region'],
-        )
-        field_year_permission_id = plastilin_db_api.create_field_year_permissions(
-            token=head_of_company_token,
-            name=data_helper.generate_random_string(name='Тестовая группа_'),
-            year_id=year_id,
-        ).json()['id']
-        response = plastilin_db_api.add_user_to_field_year_permissions(
-            token=token, field_year_permission_id=field_year_permission_id, user_id=user_id
-        )
-        assert response.status == expected_status
-
-    @pytest.mark.skip(reason='Баг в API')
-    @pytest.mark.parametrize(
-        'role,expected_status',
-        [
-            # ('super_admin', HTTPStatus.OK),  # баг
+            ('super_admin', HTTPStatus.OK),
             ('head_of_company_company_1', HTTPStatus.OK),
             ('head_of_division_company_1', HTTPStatus.OK),
             ('employee_company_1', HTTPStatus.FORBIDDEN),
@@ -326,7 +265,7 @@ class TestFieldYearPermissionsPermissions:
         ],
     )
     def test_update_field_year_permissions_by_role(
-        self, plastilin_db_api, schema_validator, data_helper, role, expected_status, get_token
+        self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
         head_of_company_token = get_token('head_of_company_company_1')
@@ -339,9 +278,9 @@ class TestFieldYearPermissionsPermissions:
         )
         field_year_permission_id = plastilin_db_api.create_field_year_permissions(
             token=head_of_company_token,
-            name=data_helper.generate_random_string(name='Тестовая группа_'),
-            year_id=year_id,
-        ).json()['id']
+            name=data_helper.generate_random_string(name='Тестовая группа'),
+            year_ids=[year_id],
+        ).json()[0]['id']
         response = plastilin_db_api.update_field_year_permissions(
             token=token,
             field_year_permission_id=field_year_permission_id,
@@ -349,19 +288,18 @@ class TestFieldYearPermissionsPermissions:
         )
         assert response.status == expected_status
 
-    @pytest.mark.skip(reason='Баг в API')
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            # ('super_admin', HTTPStatus.OK),  # баг
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
+            ('super_admin', HTTPStatus.NO_CONTENT),
+            ('head_of_company_company_1', HTTPStatus.NO_CONTENT),
+            ('head_of_division_company_1', HTTPStatus.NO_CONTENT),
             ('employee_company_1', HTTPStatus.FORBIDDEN),
             ('standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_delete_field_year_permissions_by_role(
-        self, plastilin_db_api, schema_validator, data_helper, role, expected_status, get_token
+        self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
         head_of_company_token = get_token('head_of_company_company_1')
@@ -374,9 +312,9 @@ class TestFieldYearPermissionsPermissions:
         )
         field_year_permission_id = plastilin_db_api.create_field_year_permissions(
             token=head_of_company_token,
-            name=data_helper.generate_random_string(name='Тестовая группа_'),
-            year_id=year_id,
-        ).json()['id']
+            name=data_helper.generate_random_string(name='Тестовая группа'),
+            year_ids=[year_id],
+        ).json()[0]['id']
         response = plastilin_db_api.delete_field_year_permissions(
             token=token, field_year_permission_id=field_year_permission_id
         )

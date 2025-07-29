@@ -11,7 +11,7 @@ class FieldYearPermissionsApi(BaseAPI):
     def create_field_year_permissions(
         self,
         token: str,
-        year_id: int,
+        year_ids: list[int],
         user_group_id: Optional[int] = None,
         name: Optional[str] = None,
         read: Optional[bool] = None,
@@ -32,7 +32,7 @@ class FieldYearPermissionsApi(BaseAPI):
         headers['Authorization'] = token
 
         payload = {
-            'year_id': year_id,
+            'year_ids': year_ids,
             'user_group_id': user_group_id,
             'name': name,
             'read': read,
@@ -92,15 +92,3 @@ class FieldYearPermissionsApi(BaseAPI):
             headers=headers,
         )
 
-    def add_user_to_field_year_permissions(
-        self, token: str, field_year_permission_id: int, user_id: int
-    ) -> APIResponse:
-        headers = self.headers.copy()
-        headers['Authorization'] = token
-        payload = {'user_id': user_id}
-        return self.context.post(
-            API_ENDPOINTS['plastilin_db']['field_year_permissions']
-            + f'{field_year_permission_id}/invite/',
-            headers=headers,
-            data=payload,
-        )

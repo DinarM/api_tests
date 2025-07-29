@@ -2,7 +2,11 @@
 Хелперы для API операций
 """
 
+import functools
+import logging
+import os
 import time
+from datetime import datetime
 
 
 class NullValue:
@@ -18,6 +22,43 @@ class APIHelper:
     """
     Класс с полезными методами для API операций
     """
+    
+    # Настройка логирования в файл
+    _logger_configured = False
+    
+    # Атрибуты для детального логирования
+    _debug_logger_configured = False
+    _debug_logger = None
+    _debug_log_path = None
+    
+    @staticmethod
+    def _setup_logging():
+        """
+        Настраивает логирование в файл
+        """
+        if not APIHelper._logger_configured:
+            # Создаем папку для логов если её нет
+            log_dir = 'logs'
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir)
+            
+            # Создаем имя файла с датой
+            log_filename = f'api_performance_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
+            log_path = os.path.join(log_dir, log_filename)
+            
+            # Настраиваем логирование
+            logging.basicConfig(
+                level=logging.DEBUG,
+                format='%(asctime)s - %(levelname)s - %(message)s',
+                handlers=[
+                    logging.FileHandler(log_path, encoding='utf-8'),
+                    logging.StreamHandler()  # Также выводим в консоль
+                ],
+                force=True
+            )
+            
+            APIHelper._logger_configured = True
+            logging.info(f'Логирование API производительности запущено: {log_path}')
 
     @staticmethod
     def filter_none_values(data: dict) -> dict:
@@ -80,3 +121,48 @@ class APIHelper:
                 return True
             time.sleep(interval)
         return False
+
+    @staticmethod
+    def measure_response_time(max_time: float = 1.0):
+        """
+        Декоратор для измерения времени ответа API
+        
+        Args:
+            max_time: Максимальное допустимое время ответа в секундах
+            
+        Returns:
+            Декоратор для оборачивания API методов
+        """
+        # Настраиваем логирование при первом использовании
+        APIHelper._setup_logging()
+        
+        def decorator(func):
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                start_time = time.time()
+                try:
+                    result = func(*args, **kwargs)
+                    response_time = time.time() - start_time
+                    
+                    # Логируем все запросы
+                    logging.info(f'API запрос: {func.__name__} - {response_time:.3f}с')
+                    
+                    if response_time > max_time:
+                        logging.warning(
+                            f'Медленный API запрос: {func.__name__} '
+                            f'выполнился за {response_time:.3f}с '
+                            f'(максимум {max_time}с)'
+                        )
+                    
+                    return result
+                except Exception as e:
+                    response_time = time.time() - start_time
+                    logging.error(
+                        f'API запрос завершился с ошибкой: {func.__name__} '
+                        f'за {response_time:.3f}с - {str(e)}'
+                    )
+                    raise
+                    
+            return wrapper
+        return decorator
+

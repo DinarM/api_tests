@@ -1,15 +1,15 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "array",
+  "items": {
     "type": "object",
     "properties": {
       "id": {
-        "type": "integer"
-      },
-      "year_id": {
-        "type": "integer"
+        "type": "number"
       },
       "user_group_id": {
-        "type": "integer"
+        "type": "number"
       },
       "read": {
         "type": "boolean"
@@ -17,65 +17,87 @@
       "write": {
         "type": "boolean"
       },
-      "user_group_name": {
-        "type": "string"
-      },
-      "field_id": {
-        "type": "integer"
-      },
-      "field_name": {
-        "type": "string"
-      },
-      "spec_id": {
-        "type": "integer"
-      },
-      "year": {
-        "type": "integer"
+      "field": {
+        "type": "object",
+        "properties": {
+          "year_id": {
+            "type": "number"
+          },
+          "field_id": {
+            "type": "number"
+          },
+          "spec_id": {
+            "type": "number"
+          },
+          "year": {
+            "type": "number"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "field_owner_id": {
+            "type": "number"
+          },
+          "field_owner_company_id": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "year_id",
+          "field_id",
+          "spec_id",
+          "year",
+          "field_name",
+          "field_owner_id",
+          "field_owner_company_id"
+        ]
       },
       "users": {
         "type": "array",
-        "items": [
-          {
-            "type": "object",
-            "properties": {
-              "user_id": {
-                "type": "integer"
-              },
-              "username": {
-                "type": "string"
-              },
-              "role": {
-                "type": "string"
-              },
-              "company_id": {
-                "type": "integer"
-              },
-              "company_name": {
-                "type": "string"
-              }
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
             },
-            "required": [
-              "user_id",
-              "username",
-              "role",
-              "company_id",
-              "company_name"
-            ]
-          }
-        ]
+            "username": {
+              "type": "string"
+            },
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "company_id": {
+              "type": "number"
+            },
+            "company_name": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "company_id",
+            "company_name",
+            "role"
+          ]
+        }
       }
     },
     "required": [
       "id",
-      "year_id",
       "user_group_id",
       "read",
       "write",
-      "user_group_name",
-      "field_id",
-      "field_name",
-      "spec_id",
-      "year",
+      "field",
       "users"
     ]
   }
+}

@@ -33,7 +33,7 @@ class CalculateNSRMultipleAPI(BaseAPI):
             'sort_by': sort_by,
             f'sort_by__{sort_by__key}': sort_by__value,
             f'{name_of_multiple}_multiple': value_of_multiple,
-            filter_name: filter_value,
+            f'{filter_name}': filter_value,
         }
 
         params = APIHelper.filter_none_values(params)

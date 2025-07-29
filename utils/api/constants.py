@@ -118,18 +118,25 @@ PLOT_RESULT_FIELDS = {
 }
 
 PLOT_RESULT_MODIFICATIONS = {
-    'add_column': [
-        {'name': 'Глубина корневой системы', 'type': 'float', 'unit': 'см'},
-        {'name': 'Урожайность', 'type': 'float', 'unit': 'кг/га'},
-    ],
-    'modify_column': [
+    'modifications':                 [
                     {
-                        'row_index': 0,
-                        'excel_column': 'Фенотип;Высота растения; см',
-                        'api_field': 'высота растения',
-                        'new_value': 150.5
+                        'plot_name': 'Делянка 1/1',
+                        'line_name': 'Сорт 1',
+                        'plot_results': [
+                            {
+                                'plot_final_feature': 'высота растения',
+                                'plot_final_value': '150.5',
+                                'plot_final_unit': 'см'
+                            }
+                        ],
+                        'plot_stages': [
+                            {
+                                'stage_of_vegetation': 'всходы',
+                                'date_of_stage': '2024-05-15'
+                            }
+                        ]
                     }
-    ],
+                ]
 }
 
 

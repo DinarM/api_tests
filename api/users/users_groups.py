@@ -33,7 +33,17 @@ class UsersGroupsApi(BaseAPI):
             API_ENDPOINTS['users']['users_groups'], headers=headers, data=payload
         )
 
-    def get_users_groups(self, token: str, name: Optional[str] = None, username: Optional[str] = None, first_name: Optional[str] = None, last_name: Optional[str] = None, company_name: Optional[str] = None, creator_id: Optional[int] = None, ordering: Optional[str] = None) -> APIResponse:
+    def get_users_groups(
+        self,
+        token: str,
+        name: Optional[str] = None,
+        username: Optional[str] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        company_name: Optional[str] = None,
+        creator_id: Optional[int] = None,
+        ordering: Optional[str] = None,
+    ) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
         params = {

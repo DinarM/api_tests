@@ -1,5 +1,4 @@
 import random
-import tempfile
 import uuid
 from datetime import datetime, timedelta
 from http import HTTPStatus
@@ -9,7 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
-# from utils.api.constants import TEST_DATA_PATH
+from utils.api.constants import TEST_DATA_PATH
 
 
 class DataHelper:
@@ -95,6 +94,29 @@ class DataHelper:
             token = get_token(username)
             ids.append(self.get_user_id(token=token))
         return ids
+
+    def delete_all_field_year_permissions(self, token: str) -> None:
+        """
+        Удаляет все разрешения на полевые годы для текущего пользователя
+        """
+        response = self.plastilin_db_api.get_field_year_permissions(token=token)
+        if response.status != HTTPStatus.OK:
+            raise Exception(f'Ошибка получения разрешений: {response.status}')
+        
+        data = response.json()
+        
+        for permission in data:
+            permission_id = permission.get('id')
+            if permission_id:
+                try:
+                    response = self.plastilin_db_api.delete_field_year_permissions(
+                        token=token, 
+                        field_year_permission_id=permission_id
+                    )
+                except Exception:
+                    print(f'Ошибка удаления разрешения: {permission_id}')
+
+
 
     def get_or_create_year_id(
         self, token: str, year: int, spec_id: int, field_id: int, region: str
@@ -416,10 +438,21 @@ class DataHelper:
             modifications: Список изменений значений
                 [
                     {
-                        'row_index': 0,
-                        'excel_column': 'Фенотип;Высота растения; см',
-                        'api_field': 'высота растения',
-                        'new_value': 150.5
+                        'plot_name': 'Делянка 1/1',
+                        'line_name': 'Сорт 1',
+                        'plot_results': [
+                            {
+                                'plot_final_feature': 'высота растения',
+                                'plot_final_value': '150.5',
+                                'plot_final_unit': 'см'
+                            }
+                        ],
+                        'plot_stages': [
+                            {
+                                'stage_of_vegetation': 'всходы',
+                                'date_of_stage': '2024-05-15'
+                            }
+                        ]
                     }
                 ]
             add_columns: Список новых колонок для добавления
@@ -503,34 +536,113 @@ class DataHelper:
         # Обновляем значения
         if modifications:
             for mod in modifications:
-                row_index = mod.get('row_index', 0)
-                excel_column = mod.get('excel_column', '')
-                api_field = mod.get('api_field', '')
-                new_value = mod.get('new_value')
+                plot_name = mod.get('plot_name', '')
+                line_name = mod.get('line_name', '')
+                new_plot_results = mod.get('plot_results', [])
+                new_plot_stages = mod.get('plot_stages', [])
                 
-                # Обновляем Excel данные
-                if row_index < len(excel_data['data']) and excel_column:
-                    try:
-                        col_index = excel_data['headers'].index(excel_column)
-                        excel_data['data'][row_index][col_index] = new_value
-                    except ValueError:
-                        print(f"Колонка '{excel_column}' не найдена в Excel")
+                # Находим соответствующую запись в API данных
+                api_record = None
+                for record in api_data:
+                    if (record['plot_name'] == plot_name and 
+                        record['line_name'] == line_name):
+                        api_record = record
+                        break
                 
-                # Обновляем API данные
-                if row_index < len(api_data) and api_field:
-                    record = api_data[row_index]
+                if api_record:
+                    # Обновляем plot_results
+                    if new_plot_results:
+                        for new_result in new_plot_results:
+                            feature = new_result.get('plot_final_feature', '')
+                            # Ищем существующий результат
+                            existing_result = None
+                            for result in api_record['plot_results']:
+                                if result['plot_final_feature'] == feature:
+                                    existing_result = result
+                                    break
+                            
+                            if existing_result:
+                                # Обновляем существующий
+                                existing_result.update(new_result)
+                            else:
+                                # Добавляем новый
+                                api_record['plot_results'].append(new_result)
                     
-                    # Ищем в plot_results
-                    for result in record['plot_results']:
-                        if result['plot_final_feature'] == api_field:
-                            result['plot_final_value'] = str(new_value)
+                    # Обновляем plot_stages
+                    if new_plot_stages:
+                        for new_stage in new_plot_stages:
+                            stage_name = new_stage.get('stage_of_vegetation', '')
+                            # Ищем существующую стадию
+                            existing_stage = None
+                            for stage in api_record['plot_stages']:
+                                if stage['stage_of_vegetation'] == stage_name:
+                                    existing_stage = stage
+                                    break
+                            
+                            if existing_stage:
+                                # Обновляем существующую
+                                existing_stage.update(new_stage)
+                            else:
+                                # Добавляем новую
+                                api_record['plot_stages'].append(new_stage)
+                
+                # Парсим plot_name для извлечения названия делянки и повторности
+                # Формат: "Делянка 1/1" -> название: "Делянка 1", повторность: 1
+                plot_base_name = plot_name
+                repeat_number = 1
+                if '/' in plot_name:
+                    parts = plot_name.split('/')
+                    if len(parts) == 2:
+                        plot_base_name = parts[0].strip()
+                        try:
+                            repeat_number = int(parts[1].strip())
+                        except ValueError:
+                            repeat_number = 1
+                
+                # Находим соответствующую строку в Excel данных
+                excel_row_index = None
+                for i, row in enumerate(excel_data['data']):
+                    # plot_name находится в 4-й колонке (индекс 3)
+                    # line_name находится в 5-й колонке (индекс 4) 
+                    # номер повторности находится в 6-й колонке (индекс 5)
+                    if (row[3] == plot_base_name and 
+                        row[4] == line_name and
+                        row[5] == repeat_number):
+                        excel_row_index = i
+                        break
+                
+                if excel_row_index is not None:
+                    # Обновляем Excel данные на основе обновленных API данных
+                    updated_record = None
+                    for record in api_data:
+                        if (record['plot_name'] == plot_name and 
+                            record['line_name'] == line_name):
+                            updated_record = record
                             break
                     
-                    # Ищем в plot_stages
-                    for stage in record['plot_stages']:
-                        if stage['stage_of_vegetation'] == api_field:
-                            stage['date_of_stage'] = new_value
-                            break
+                    if updated_record:
+                        # Обновляем фенотипы в Excel
+                        for result in updated_record['plot_results']:
+                            feature = result['plot_final_feature']
+                            value = result['plot_final_value']
+                            unit = result.get('plot_final_unit', '')
+                            
+                            # Ищем соответствующую колонку в Excel
+                            for i, header in enumerate(excel_data['headers']):
+                                if header.startswith('Фенотип;') and feature in header:
+                                    excel_data['data'][excel_row_index][i] = value
+                                    break
+                        
+                        # Обновляем стадии развития в Excel
+                        for stage in updated_record['plot_stages']:
+                            stage_name = stage['stage_of_vegetation']
+                            date_value = stage['date_of_stage']
+                            
+                            # Ищем соответствующую колонку в Excel
+                            for i, header in enumerate(excel_data['headers']):
+                                if header.startswith('Стадия развития;') and stage_name in header:
+                                    excel_data['data'][excel_row_index][i] = date_value
+                                    break
         
         updated_data['excel'] = excel_data
         updated_data['api'] = api_data
@@ -579,8 +691,8 @@ class DataHelper:
             f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
         )
         # TODO: remove this
-        path = Path(tempfile.gettempdir()) / filename
-        # path = TEST_DATA_PATH / filename
+        # path = Path(tempfile.gettempdir()) / filename
+        path = TEST_DATA_PATH / filename
         wb.save(path)
         wb.close()
         
