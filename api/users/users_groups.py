@@ -56,7 +56,11 @@ class UsersGroupsApi(BaseAPI):
             'ordering': ordering,
         }
         params = APIHelper.filter_none_values(params)
-        return self.context.get(API_ENDPOINTS['users']['users_groups'], headers=headers, params=params)
+        return self.context.get(
+            API_ENDPOINTS['users']['users_groups'], 
+            headers=headers, 
+            params=params
+        )
 
     def get_users_group_by_id(self, token: str, group_id: int) -> APIResponse:
         headers = self.headers.copy()

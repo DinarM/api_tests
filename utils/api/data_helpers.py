@@ -288,8 +288,10 @@ class DataHelper:
         year: int,
         region: str,
         base_plot_name: str,
+        number_of_plots: Optional[str] = None,
+        sort_name: Optional[bool] = True,
         row_count: int = 10,
-        repeats: int = 1,
+        repeats: Optional[int] = None,
         phenotypic_fields: Optional[List[Dict[str, str]]] = None,
         dev_stage_fields: Optional[List[Dict[str, str]]] = None,
     ) -> Dict[str, Any]:
@@ -300,6 +302,7 @@ class DataHelper:
             field_name: Название питомника
             year: Год
             region: Регион
+            sort_name: Название сорта
             base_plot_name: Базовое название делянки
             row_count: Количество записей на повторность
             repeats: Количество повторностей
@@ -331,24 +334,38 @@ class DataHelper:
         phenotypic_fields = phenotypic_fields or []
         dev_stage_fields = dev_stage_fields or []
         
-        # Формируем заголовки для Excel
-        headers = [
-            'Название питомника', 'Год', 'Регион', 'Название делянки', 
-            'Название сорта', 'Номер повторности'
-        ]
+        # Формируем заголовки для Excel динамически
+        headers = []
         
-        # Формируем заголовки фенотипов
+        # Добавляем базовые заголовки только если соответствующие параметры переданы
+        if number_of_plots:
+            headers.append('Номер делянки')
+        if field_name:
+            headers.append('Название питомника')
+        if year:
+            headers.append('Год')
+        if region:
+            headers.append('Регион')
+        if base_plot_name:
+            headers.append('Название делянки')
+        if sort_name:
+            headers.append('Название сорта')
+        if repeats:
+            headers.append('Номер повторности')
+        
         phenotypic_names = []
-        for field in phenotypic_fields:
-            if field['type'] == 'float' and 'unit' in field:
-                phenotypic_names.append(f"Фенотип;{field['name']}; {field['unit']}")
-            else:
-                phenotypic_names.append(f"Фенотип;{field['name']};")
-        
-        # Формируем заголовки стадий развития
+        # Формируем заголовки фенотипов
+        if phenotypic_fields:
+            for field in phenotypic_fields:
+                if field['type'] == 'float' and 'unit' in field:
+                    phenotypic_names.append(f"Фенотип;{field['name']}; {field['unit']}")
+                else:
+                    phenotypic_names.append(f"Фенотип;{field['name']};")
+
         dev_stage_names = []
-        for field in dev_stage_fields:
-            dev_stage_names.append(f"Стадия развития;{field['name']};")
+        if dev_stage_fields:
+            for field in dev_stage_fields:
+                dev_stage_names.append(f"Стадия развития;{field['name']};")
         
         headers.extend(phenotypic_names)
         headers.extend(dev_stage_names)
@@ -356,51 +373,71 @@ class DataHelper:
         # Генерируем данные для обоих форматов
         excel_data = []
         api_data = []
-        
-        for repeat in range(1, repeats + 1):
+
+        count_of_plots = 0
+
+        for repeat in range(1, repeats + 1 if repeats else 2):
             for plot_num in range(1, row_count + 1):
                 # Генерируем значения для текущей записи
-                phenotypic_values = [
-                    self._generate_field_value(f['type']) for f in phenotypic_fields
-                ]
-                dev_stage_values = [
-                    self._generate_field_value(f['type']) for f in dev_stage_fields
-                ]
                 
-                # Формируем строку для Excel
-                excel_row = [
-                    field_name,
-                    year,
-                    region,
-                    f"{base_plot_name} {plot_num}",
-                    f"Сорт {plot_num}",
-                    repeat
-                ]
-                excel_row.extend(phenotypic_values)
-                excel_row.extend(dev_stage_values)
+                if phenotypic_names:
+                    phenotypic_values = [
+                        self._generate_field_value(f['type']) for f in phenotypic_fields
+                    ]
+                if dev_stage_names:
+                    dev_stage_values = [
+                        self._generate_field_value(f['type']) for f in dev_stage_fields
+                    ]
+                
+                # Формируем строку для Excel динамически
+                excel_row = []
+                
+                # Добавляем данные только если соответствующие параметры переданы
+                if number_of_plots:
+                    excel_row.append(f'{number_of_plots} {count_of_plots + 1}')
+                    count_of_plots += 1
+                if field_name:
+                    excel_row.append(field_name)
+                if year:
+                    excel_row.append(year)
+                if region:
+                    excel_row.append(region)
+                if base_plot_name:
+                    excel_row.append(f"{base_plot_name} {plot_num}")
+                if sort_name:
+                    excel_row.append(f"Сорт {plot_num}")
+                if repeats:
+                    excel_row.append(repeat)
+                if phenotypic_names:
+                    excel_row.extend(phenotypic_values)
+                if dev_stage_names:
+                    excel_row.extend(dev_stage_values)
                 excel_data.append(excel_row)
                 
                 # Формируем данные для API
                 plot_results = []
-                for i, field in enumerate(phenotypic_fields):
-                    plot_results.append({
-                        "plot_final_feature": field['name'].lower(),
-                        "plot_final_value": str(phenotypic_values[i]),
-                        "plot_final_unit": field.get('unit', '')
-                    })
+                if phenotypic_fields:
+                    for i, field in enumerate(phenotypic_fields):
+                        plot_results.append({
+                            "plot_final_feature": field['name'].lower(),
+                            "plot_final_value": str(phenotypic_values[i]),
+                            "plot_final_unit": field.get('unit', '')
+                        })
                 
                 plot_stages = []
-                for i, field in enumerate(dev_stage_fields):
-                    plot_stages.append({
-                        "stage_of_vegetation": field['name'].lower(),
-                        "date_of_stage": dev_stage_values[i]
+                if dev_stage_fields:
+                    for i, field in enumerate(dev_stage_fields):
+                        plot_stages.append({
+                            "stage_of_vegetation": field['name'].lower(),
+                            "date_of_stage": dev_stage_values[i]
                     })
                 
                 api_record = {
                     "plot_name": f"{base_plot_name} {plot_num}/{repeat}",
                     "line_name": f"Сорт {plot_num}",
-                    "plot_results": plot_results,
-                    "plot_stages": plot_stages
+                    "plot_label": f"{number_of_plots} {repeat}" if number_of_plots else None,
+                    "plot_results": plot_results if phenotypic_fields else None,
+                    "plot_stages": plot_stages if dev_stage_fields else None
                 }
                 api_data.append(api_record)
         
@@ -625,7 +662,6 @@ class DataHelper:
                         for result in updated_record['plot_results']:
                             feature = result['plot_final_feature']
                             value = result['plot_final_value']
-                            unit = result.get('plot_final_unit', '')
                             
                             # Ищем соответствующую колонку в Excel
                             for i, header in enumerate(excel_data['headers']):
@@ -711,39 +747,46 @@ class DataHelper:
             assert plot_response['line_name'] == plot_api['line_name']
 
             # Словари для быстрого поиска по признаку
-            plot_results_by_feature = {
-                r['plot_final_feature']: r for r in plot_api['plot_results']
-            }
-            response_results_by_feature = {
-                r['plot_final_feature']: r for r in plot_response['plot_results']
-            }
 
-            for feature, plot_result in plot_results_by_feature.items():
-                plot_response_result = response_results_by_feature.get(feature)
-                assert plot_response_result is not None
-                # Сравниваем значения как числа
-                assert plot_result['plot_final_value'] == plot_response_result['plot_final_value']
-                assert plot_result['plot_final_unit'] == plot_response_result['plot_final_unit']
+
+
+            # Проверяем plot_results только если они есть в plot_data
+            if plot_api['plot_results']:
+                plot_results_by_feature = {
+                    r['plot_final_feature']: r for r in plot_api['plot_results']
+                }
+                response_results_by_feature = {
+                    r['plot_final_feature']: r for r in plot_response['plot_results']
+                }
+                for feature, plot_result in plot_results_by_feature.items():
+                    plot_response_result = response_results_by_feature.get(feature)
+                    assert plot_response_result is not None
+                    # Сравниваем значения как числа
+                    assert plot_result['plot_final_value'] == plot_response_result['plot_final_value']
+                    assert plot_result['plot_final_unit'] == plot_response_result['plot_final_unit']
 
             # Аналогично для стадий
-            plot_stages_by_name = {
-                s['stage_of_vegetation'].lower(): s for s in plot_api['plot_stages']
-            }
-            response_stages_by_name = {
-                s['stage_of_vegetation'].lower(): s for s in plot_response['plot_stages']
-            }
+            
 
-            # Находим дату стадии "всходы"
-            sowing_stage = plot_stages_by_name.get('всходы')
-            assert sowing_stage is not None
-            sowing_date = sowing_stage['date_of_stage']
+            # Проверяем plot_stages только если они есть в plot_data
+            if plot_api['plot_stages']:
+                plot_stages_by_name = {
+                    s['stage_of_vegetation'].lower(): s for s in plot_api['plot_stages']
+                }
+                response_stages_by_name = {
+                    s['stage_of_vegetation'].lower(): s for s in plot_response['plot_stages']
+                }
+                # Находим дату стадии "всходы"
+                sowing_stage = plot_stages_by_name.get('всходы')
+                assert sowing_stage is not None
+                sowing_date = sowing_stage['date_of_stage']
 
-            for stage_name, plot_stage in plot_stages_by_name.items():
-                response_stage = response_stages_by_name.get(stage_name)
-                assert response_stage is not None
-                assert plot_stage['date_of_stage'] == response_stage['date_of_stage']
-                days_after_sowing = (
-                    datetime.strptime(response_stage['date_of_stage'], '%Y-%m-%d') -
-                    datetime.strptime(sowing_date, '%Y-%m-%d')
-                ).days
-                assert int(days_after_sowing) == int(response_stage['days_after_sowing'])
+                for stage_name, plot_stage in plot_stages_by_name.items():
+                    response_stage = response_stages_by_name.get(stage_name)
+                    assert response_stage is not None
+                    assert plot_stage['date_of_stage'] == response_stage['date_of_stage']
+                    days_after_sowing = (
+                        datetime.strptime(response_stage['date_of_stage'], '%Y-%m-%d') -
+                        datetime.strptime(sowing_date, '%Y-%m-%d')
+                    ).days
+                    assert int(days_after_sowing) == int(response_stage['days_after_sowing'])

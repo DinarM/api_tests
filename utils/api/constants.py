@@ -30,6 +30,9 @@ API_ENDPOINTS = {
         'combined_plot_field_line_genealogy':
             '/api/v1/plastilin_db/combined_plot_field_line_genealogy/',
     },
+    'notice_app': {
+        'notifications': '/api/v1/notice_app/notifications/',
+    },
 }
 
 YEARS = {
@@ -106,6 +109,7 @@ PLOT_RESULT_FIELDS = {
     'base_plot_name': 'Делянка',
     'row_count': 5,
     'repeats': 3,
+    'number_of_plots': 'д',
     'phenotypic_fields': [
         {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
         {'name': 'Устойчивость к болезням', 'type': 'string'},

@@ -1,0 +1,291 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "object",
+    "properties": {
+      "meta": {
+        "type": "object",
+        "properties": {
+          "total_pages": {
+            "type": "number"
+          },
+          "total_items": {
+            "type": "number"
+          },
+          "current_page": {
+            "type": "number"
+          },
+          "page_size": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "total_pages",
+          "total_items",
+          "current_page",
+          "page_size"
+        ]
+      },
+      "data": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "plot_order_priority": {
+              "type": "number"
+            },
+            "line_id": {
+              "type": "number"
+            },
+            "line_name": {
+              "type": "string"
+            },
+            "parent_line_id_1": {},
+            "parent_name_1": {},
+            "parent_line_id_2": {},
+            "parent_name_2": {},
+            "plot_id": {
+              "type": "number"
+            },
+            "plot_name": {
+              "type": "string"
+            },
+            "comment": {},
+            "length": {},
+            "width": {},
+            "square": {},
+            "plot_group": {
+              "type": "string"
+            },
+            "is_sort": {
+              "type": "boolean"
+            },
+            "plot_label": {
+              "type": "string"
+            },
+            "is_existed_brush": {
+              "type": "boolean"
+            },
+            "crossbreeding_line_id": {},
+            "crossbreeding_line_name": {},
+            "plot_results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "plot_final_id": {
+                    "type": "number"
+                  },
+                  "plot_final_feature": {
+                    "type": "string"
+                  },
+                  "plot_final_value": {
+                    "type": "string"
+                  },
+                  "plot_final_unit": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "plot_final_id",
+                  "plot_final_feature",
+                  "plot_final_value",
+                  "plot_final_unit"
+                ]
+              }
+            },
+            "plot_stages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "plot_stage_id": {
+                    "type": "number"
+                  },
+                  "stage_of_vegetation": {
+                    "type": "string"
+                  },
+                  "date_of_stage": {
+                    "type": "string"
+                  },
+                  "days_after_sowing": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "plot_stage_id",
+                  "stage_of_vegetation",
+                  "date_of_stage",
+                  "days_after_sowing"
+                ]
+              }
+            },
+            "plot_harvest": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "harvest_id": {
+                    "type": "number"
+                  },
+                  "harvest_technology": {
+                    "type": "string"
+                  },
+                  "harvest_date_planned": {},
+                  "harvest_date_real": {},
+                  "harvest_comment": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "harvest_id",
+                  "harvest_technology",
+                  "harvest_date_planned",
+                  "harvest_date_real",
+                  "harvest_comment"
+                ]
+              }
+            },
+            "genotype": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "mutation_table_id": {},
+                  "plot_genotype_id": {},
+                  "mut_name": {},
+                  "first_allele": {},
+                  "second_allele": {}
+                },
+                "required": [
+                  "mutation_table_id",
+                  "plot_genotype_id",
+                  "mut_name",
+                  "first_allele",
+                  "second_allele"
+                ]
+              }
+            },
+            "brushes": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "plot_order_priority",
+            "line_id",
+            "line_name",
+            "parent_line_id_1",
+            "parent_name_1",
+            "parent_line_id_2",
+            "parent_name_2",
+            "plot_id",
+            "plot_name",
+            "comment",
+            "length",
+            "width",
+            "square",
+            "plot_group",
+            "is_sort",
+            "plot_label",
+            "is_existed_brush",
+            "crossbreeding_line_id",
+            "crossbreeding_line_name",
+            "plot_results",
+            "plot_stages",
+            "plot_harvest",
+            "genotype",
+            "brushes"
+          ]
+        }
+      },
+      "unique_values": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "comment": {
+            "type": "array",
+            "items": {}
+          },
+          "phenotypes": {
+            "type": "object",
+            "properties": {
+              "белок в семенах": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "высота растения": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "размер бобов": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "цвет семян": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "устойчивость к болезням": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "текстура семян": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "тип стебля": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "белок в семенах",
+              "высота растения",
+              "размер бобов",
+              "цвет семян",
+              "устойчивость к болезням",
+              "текстура семян",
+              "тип стебля"
+            ]
+          }
+        },
+        "required": [
+          "parent",
+          "comment",
+          "phenotypes"
+        ]
+      },
+      "characteristics_order": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "meta",
+      "data",
+      "unique_values",
+      "characteristics_order"
+    ]
+  }

@@ -4,6 +4,7 @@ import pytest
 from playwright.sync_api import sync_playwright
 
 from api.auth.auth_api import AuthApi
+from api.notice_app.notice_app_api import NoticeAppApi
 from api.plastilin_db.plastilin_db_api import PlastilinDbApi
 from api.users.users_api import UsersApi
 from config import get_base_url, get_credentials
@@ -56,6 +57,10 @@ def users_api(api_context):
 @pytest.fixture
 def auth_api(api_context):
     return AuthApi(api_context)
+
+@pytest.fixture
+def notice_app_api(api_context):
+    return NoticeAppApi(api_context)
 
 
 @pytest.fixture
