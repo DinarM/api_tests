@@ -762,8 +762,14 @@ class DataHelper:
                     plot_response_result = response_results_by_feature.get(feature)
                     assert plot_response_result is not None
                     # Сравниваем значения как числа
-                    assert plot_result['plot_final_value'] == plot_response_result['plot_final_value']
-                    assert plot_result['plot_final_unit'] == plot_response_result['plot_final_unit']
+                    assert (
+                        plot_result['plot_final_value'] == 
+                        plot_response_result['plot_final_value']
+                    )
+                    assert (
+                        plot_result['plot_final_unit'] == 
+                        plot_response_result['plot_final_unit']
+                    )
 
             # Аналогично для стадий
             

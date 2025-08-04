@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+
 class TestNotificationsGet:
     def test_notifications_get_success(self, get_token, notice_app_api, schema_validator):
         token = get_token('head_of_company_company_1')

@@ -245,7 +245,9 @@ class TestPlotResultCreate:
             phenotypic_fields=phenotypic_fields,
             dev_stage_fields=dev_stage_fields,
         )
-        excel_file_new, filename_new = data_helper.create_plot_result_excel(plot_data=plot_data_new)
+        excel_file_new, filename_new = data_helper.create_plot_result_excel(
+            plot_data=plot_data_new
+        )
 
         response = plastilin_db_api.create_plot_result(
             token=token,
