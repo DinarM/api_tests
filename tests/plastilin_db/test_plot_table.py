@@ -10,7 +10,7 @@ class TestPlotTableCreate:
     def test_plot_table_create_success(
         self, get_token, plastilin_db_api, data_helper, schema_validator
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -35,7 +35,7 @@ class TestPlotTableCreate:
     def test_plot_table_create_with_all_fields(
         self, get_token, plastilin_db_api, data_helper, schema_validator
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -66,7 +66,7 @@ class TestPlotTableCreate:
     def test_plot_table_create_with_space_in_plot_name(
         self, get_token, plastilin_db_api, data_helper
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -93,7 +93,7 @@ class TestPlotTableCreate:
     def test_plot_table_create_with_space_in_line_name(
         self, get_token, plastilin_db_api, data_helper
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -129,7 +129,7 @@ class TestPlotTableCreateNegative:
     def test_plot_table_create_with_invalid_plot_name(
         self, get_token, plastilin_db_api, data_helper, plot_name, expected_error
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -160,7 +160,7 @@ class TestPlotTableCreateNegative:
     def test_plot_table_create_with_invalid_line_name(
         self, get_token, plastilin_db_api, data_helper, line_name, expected_error
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -192,7 +192,7 @@ class TestPlotTableCreateNegative:
     def test_plot_table_create_with_invalid_repetitions(
         self, get_token, plastilin_db_api, data_helper, repetitions, expected_error 
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -222,7 +222,7 @@ class TestPlotTableCreateNegative:
     def test_plot_table_create_with_invalid_width_and_length(
         self, get_token, plastilin_db_api, data_helper, width, length, expected_error
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
         spec_id, field_id, _ = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],

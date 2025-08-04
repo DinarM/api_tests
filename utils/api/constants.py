@@ -36,6 +36,9 @@ API_ENDPOINTS = {
 }
 
 YEARS = {
+    '2019': 2019,
+    '2020': 2020,
+    '2021': 2021,
     '2022': 2022,
     '2023': 2023,
     '2025': 2025,
@@ -55,6 +58,14 @@ TEST_CULTURES = {
 REGIONS = {
     'Амурская область': 'Амурская область',
     'Краснодарский край': 'Краснодарский край',
+    'Алтайский край': 'Алтайский край',
+    'Красноярский край': 'Красноярский край',
+    'Республика Башкортостан': 'Республика Башкортостан',
+    'Республика Татарстан': 'Республика Татарстан',
+    'Республика Мордовия': 'Республика Мордовия',
+    'Республика Марий Эл': 'Республика Марий Эл',
+    'Республика Чувашия': 'Республика Чувашия',
+    'Республика Удмуртия': 'Республика Удмуртия',
 }
 
 FIELDS = {
@@ -117,7 +128,87 @@ PLOT_RESULT_FIELDS = {
     'dev_stage_fields': [
         {'name': 'Всходы', 'type': 'date'},
         {'name': 'Развертывание первых листьев', 'type': 'date'},
-        {'name': 'Фаза дозревания', 'type': 'date'},
+
+    ],
+}
+
+PLOT_FIELDS_HEAD_OF_COMPANY = {
+    'field_name': 'Питомник директора компании',
+    'year': YEARS['2025'],
+    'region': REGIONS['Алтайский край'],
+    'base_plot_name': 'Делянка директора компании',
+    'row_count': 5,
+    'repeats': 2,
+    'phenotypic_fields': [
+        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+    ],
+    'dev_stage_fields': [
+        {'name': 'Всходы', 'type': 'date'},
+        {'name': 'Развертывание первых листьев', 'type': 'date'},
+    ],
+}
+
+PLOT_FIELDS_HEAD_OF_DIVISION_1 = {
+    'field_name': 'Питомник руководителя дивизии 1',
+    'year': YEARS['2020'],
+    'region': REGIONS['Республика Башкортостан'],
+    'base_plot_name': 'Делянка руководителя дивизии 1',
+    'row_count': 5,
+    'repeats': 2,
+    'phenotypic_fields': [
+        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+    ],
+    'dev_stage_fields': [
+        {'name': 'Всходы', 'type': 'date'},
+        {'name': 'Развертывание первых листьев', 'type': 'date'},
+    ],
+}
+
+PLOT_FIELDS_HEAD_OF_DIVISION_2 = {
+    'field_name': 'Питомник руководителя дивизии 2',
+    'year': YEARS['2021'],
+    'region': REGIONS['Республика Мордовия'],
+    'base_plot_name': 'Делянка руководителя дивизии 2',
+    'row_count': 5,
+    'repeats': 2,
+    'phenotypic_fields': [
+        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+    ],
+    'dev_stage_fields': [
+        {'name': 'Всходы', 'type': 'date'},
+        {'name': 'Развертывание первых листьев', 'type': 'date'},
+    ],
+}
+
+PLOT_FIELDS_EMPLOYEE_1_DIVISION_1 = {
+    'field_name': 'Питомник сотрудника 1 дивизии 1',
+    'year': YEARS['2020'],
+    'region': REGIONS['Республика Марий Эл'],
+    'base_plot_name': 'Делянка сотрудника 1 дивизии 1',
+    'row_count': 5,
+    'repeats': 2,
+    'phenotypic_fields': [
+        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+    ],
+    'dev_stage_fields': [
+        {'name': 'Всходы', 'type': 'date'},
+        {'name': 'Развертывание первых листьев', 'type': 'date'},
+    ],
+}
+
+PLOT_FIELDS_EMPLOYEE_1_DIVISION_2 = {
+    'field_name': 'Питомник сотрудника 1 дивизии 2',
+    'year': YEARS['2021'],
+    'region': REGIONS['Республика Чувашия'],
+    'base_plot_name': 'Делянка сотрудника 1 дивизии 2',
+    'row_count': 5,
+    'repeats': 2,
+    'phenotypic_fields': [
+        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+    ],
+    'dev_stage_fields': [
+        {'name': 'Всходы', 'type': 'date'},
+        {'name': 'Развертывание первых листьев', 'type': 'date'},
     ],
 }
 

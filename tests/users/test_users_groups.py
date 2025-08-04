@@ -12,7 +12,7 @@ class TestUsersGroupsGet:
         """
         Тест успешного получения списка групп пользователей
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         response = users_api.get_users_groups(token=token)
         assert response.status == HTTPStatus.OK
         response_data = response.json()
@@ -45,7 +45,7 @@ class TestUsersGroupsGet:
         """
         Тест успешного получения списка групп пользователей с параметрами
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         response = users_api.get_users_groups(
             token=token, 
             name=name, 
@@ -66,7 +66,7 @@ class TestUsersGroupsGet:
         """
         Тест успешного получения группы пользователей по ID
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         name = data_helper.generate_random_string(name='Test Group')
         group_id = users_api.create_users_groups(token=token, name=name).json().get('id')
         response = users_api.get_users_group_by_id(token=token, group_id=group_id)
@@ -88,7 +88,7 @@ class TestUsersGroupsCreate:
         """
         Тест успешного создания группы пользователей с обязательными полями
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         name = data_helper.generate_random_string(name='Test Group')
         response = users_api.create_users_groups(token=token, name=name)
         assert response.status == HTTPStatus.CREATED
@@ -100,8 +100,8 @@ class TestUsersGroupsCreate:
     @pytest.mark.parametrize(
         'read,write,add_yourself,user_ids',
         [
-            (True, True, True, ['employee_company_1']),
-            (True, False, False, ['employee_company_1', 'employee_2_company_1']),
+            (True, True, True, ['company_1.division_1.employee_1']),
+            (True, False, False, ['company_1.division_1.employee_1', 'company_1.division_1.employee_2']),
             (False, True, False, None),
             (False, False, True, None),
             (True, True, False, None),
@@ -113,7 +113,7 @@ class TestUsersGroupsCreate:
         """
         Тест успешного создания группы пользователей с всеми полями
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         self_user_id = data_helper.get_user_id(token=token)
         ids = data_helper.get_user_ids_by_usernames(get_token, user_ids)
         name = data_helper.generate_random_string(name='Test Group')
@@ -152,8 +152,8 @@ class TestUsersGroupsCreateInvite:
         """
         Тест успешного создания приглашения в группу пользователей
         """
-        token = get_token('head_of_company_company_1')
-        employee_token = get_token('employee_company_1')
+        token = get_token('company_1.head_of_company')
+        employee_token = get_token('company_1.division_1.employee_1')
         name = data_helper.generate_random_string(name='Test Group')
         group_id = users_api.create_users_groups(token=token, name=name).json().get('id')
         employee_user_id = data_helper.get_user_id(token=employee_token)
@@ -177,7 +177,7 @@ class TestUsersGroupsUpdate:
         """
         Тест успешного обновления группы пользователей
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         name = data_helper.generate_random_string(name='Test Group')
         new_name = data_helper.generate_random_string(name='New Test Group')
         group_id = users_api.create_users_groups(token=token, name=name).json().get('id')
@@ -201,7 +201,7 @@ class TestUsersGroupsDelete:
         """
         Тест успешного удаления группы пользователей
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         name = data_helper.generate_random_string(name='Test Group')
         group_id = users_api.create_users_groups(token=token, name=name).json().get('id')
         response = users_api.delete_users_group(token=token, group_id=group_id)
@@ -216,11 +216,11 @@ class TestUsersGroupsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.CREATED),
-            ('head_of_company_company_1', HTTPStatus.CREATED),
-            ('head_of_division_company_1', HTTPStatus.CREATED),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.CREATED),
+            ('company_1.head_of_company', HTTPStatus.CREATED),
+            ('company_1.division_1.head_of_division', HTTPStatus.CREATED),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_create_users_groups_permissions(
@@ -237,11 +237,11 @@ class TestUsersGroupsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.OK),
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.OK),
+            ('company_1.head_of_company', HTTPStatus.OK),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_get_users_groups_permissions(self, users_api, role, expected_status, get_token):
@@ -255,11 +255,11 @@ class TestUsersGroupsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.OK),
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.OK),
+            ('company_1.head_of_company', HTTPStatus.OK),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_get_users_groups_by_id_permissions(
@@ -277,11 +277,11 @@ class TestUsersGroupsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.OK),
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.OK),
+            ('company_1.head_of_company', HTTPStatus.OK),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_update_users_groups_permissions(
@@ -300,11 +300,11 @@ class TestUsersGroupsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.NO_CONTENT),
-            ('head_of_company_company_1', HTTPStatus.NO_CONTENT),
-            ('head_of_division_company_1', HTTPStatus.NO_CONTENT),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.NO_CONTENT),
+            ('company_1.head_of_company', HTTPStatus.NO_CONTENT),
+            ('company_1.division_1.head_of_division', HTTPStatus.NO_CONTENT),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_delete_users_groups_permissions(
@@ -322,11 +322,15 @@ class TestUsersGroupsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status,employee_role',
         [
-            ('super_admin', HTTPStatus.OK, 'standalone_user'),
-            ('head_of_company_company_1', HTTPStatus.OK, 'employee_company_1'),
-            ('head_of_division_company_1', HTTPStatus.OK, 'employee_company_1'),
-            ('employee_company_1', HTTPStatus.FORBIDDEN, 'employee_company_1'),
-            ('standalone_user', HTTPStatus.FORBIDDEN, 'employee_company_1'),
+            ('other.super_admin', HTTPStatus.OK, 'other.standalone_user'),
+            ('company_1.head_of_company', HTTPStatus.OK, 
+             'company_1.division_1.employee_1'),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK, 
+             'company_1.division_1.employee_1'),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN, 
+             'company_1.division_1.employee_1'),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN, 
+             'company_1.division_1.employee_1'),
         ],
     )
     def test_invite_user_to_group_permissions(

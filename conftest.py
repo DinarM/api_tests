@@ -65,7 +65,7 @@ def notice_app_api(api_context):
 
 @pytest.fixture
 def get_token(api_context, env, get_refresh_token=False):
-    def _get_token(role='standalone_user'):
+    def _get_token(role='other.super_admin'):
         try:
             creds = get_credentials(env, role)
         except Exception as e:

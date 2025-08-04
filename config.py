@@ -28,24 +28,40 @@ def get_base_url(env=None):
 
 CREDENTIALS = {
     'stage': {
-        'employee_company_1': {
-            'username': 'QA_user_1_div_1',
-            'password': 'x1210Lozcw0yEwxYuyjg',
+        'company_1': {
+            'head_of_company': {
+                'username': 'QA_head_of_company',
+                'password': 'XgdcDzc5oj0owLN2pAti',
+            },
+            'division_1': {
+                'employee_1': {
+                    'username': 'QA_user_1_div_1',
+                    'password': 'x1210Lozcw0yEwxYuyjg',
+                },
+                'employee_2': {
+                    'username': 'QA_user_2_div_1',
+                    'password': 'g5dsLfRVu6EAf5WEl3h3',
+                },
+                'head_of_division': {
+                    'username': 'QA_head_of_div_1',
+                    'password': 'R5YDvyMJeDYI88cpRFe0',
+                },
+            },
+            'division_2': {
+                'employee_1': {
+                    'username': 'QA_user_1_div_2',
+                    'password': 'g5dsLfRVu6EAf5WEl3h3',
+                },
+                'head_of_division': {
+                    'username': 'QA_head_of_div_2',
+                    'password': 'R5YDvyMJeDYI88cpRFe0',
+                },
+            },
         },
-        'employee_2_company_1': {
-            'username': 'QA_user_2_div_1',
-            'password': 'g5dsLfRVu6EAf5WEl3h3',
-        },
-        'head_of_division_company_1': {
-            'username': 'QA_head_of_div_1',
-            'password': 'R5YDvyMJeDYI88cpRFe0',
-        },
-        'head_of_company_company_1': {
-            'username': 'QA_head_of_company',
-            'password': 'XgdcDzc5oj0owLN2pAti',
-        },
-        'super_admin': {'username': 'aqa_admin', 'password': 'q1w2e3r4T%'},
-        'standalone_user': {'username': 'dinar_test', 'password': 'q1w2e3r4T%'},
+        'other': {
+            'super_admin': {'username': 'aqa_admin', 'password': 'q1w2e3r4T%'},
+            'standalone_user': {'username': 'dinar_test', 'password': 'q1w2e3r4T%'},
+        }
     },
     'dev': {
         'employee': {'username': 'employee_dev', 'password': 'employee_pass'},
@@ -62,7 +78,7 @@ def get_credentials(env=None, role='employee'):
 
     Args:
         env: Окружение (если None, используется CURRENT_ENV)
-        role: Роль пользователя (employee, head, ceo)
+        role: Роль пользователя (может быть простой строкой или путем через точку, например: 'other.super_admin' или 'company_1.head_of_company')
 
     Returns:
         dict: креды с ключами username и password
@@ -70,6 +86,17 @@ def get_credentials(env=None, role='employee'):
     env = env or CURRENT_ENV
     if env not in CREDENTIALS:
         raise ValueError(f'Нет кредов для окружения {env}')
-    if role not in CREDENTIALS[env]:
-        raise ValueError(f'Нет кредов для роли {role} в окружении {env}')
-    return CREDENTIALS[env][role]
+    
+    # Разбиваем роль на части по точкам
+    role_parts = role.split('.')
+    
+    # Начинаем с уровня окружения
+    current_level = CREDENTIALS[env]
+    
+    # Проходим по всем частям пути
+    for part in role_parts:
+        if part not in current_level:
+            raise ValueError(f'Нет кредов для роли {role} в окружении {env}')
+        current_level = current_level[part]
+    
+    return current_level

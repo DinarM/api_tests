@@ -765,11 +765,13 @@ class DataHelper:
                     assert (
                         plot_result['plot_final_value'] == 
                         plot_response_result['plot_final_value']
-                    )
+                    ), (f'{plot_result["plot_final_value"]} != '
+                        f'{plot_response_result["plot_final_value"]}')
                     assert (
                         plot_result['plot_final_unit'] == 
                         plot_response_result['plot_final_unit']
-                    )
+                    ), (f'{plot_result["plot_final_unit"]} != '
+                        f'{plot_response_result["plot_final_unit"]}')
 
             # Аналогично для стадий
             
@@ -796,3 +798,42 @@ class DataHelper:
                         datetime.strptime(sowing_date, '%Y-%m-%d')
                     ).days
                     assert int(days_after_sowing) == int(response_stage['days_after_sowing'])
+
+    def generate_random_plot_data(self, plot_fields: Dict[str, Any], spec_name: str, token: str):
+        
+        plot_data = self.generate_plot_result_data(
+            field_name=plot_fields['field_name'],
+            year=plot_fields['year'],
+            region=plot_fields['region'],
+            base_plot_name=plot_fields['base_plot_name'],
+            number_of_plots=plot_fields['number_of_plots'],
+            sort_name=plot_fields['sort_name'],
+            row_count=plot_fields['row_count'],
+            repeats=plot_fields['repeats'],
+            phenotypic_fields=plot_fields['phenotypic_fields'],
+            dev_stage_fields=plot_fields['dev_stage_fields'],
+        )
+        
+        spec_id, field_id, year_id = self.get_or_create_spec_field_year_id(
+            token=token,
+            spec_name=spec_name,
+            field_name=plot_fields['field_name'],
+            year=plot_fields['year'],
+            region=plot_fields['region'],
+        )
+
+        excel_file, filename = self.create_plot_result_excel(plot_data=plot_data)
+
+        response = self.plastilin_db_api.create_plot_result(
+            token=token,
+            file_name=filename,
+            file_path=excel_file,
+            spec_id=spec_id,
+        )
+        assert response.status == HTTPStatus.CREATED
+
+        return {
+            'spec_id': spec_id,
+            'field_id': field_id,
+            'year_id': year_id,
+        }

@@ -14,7 +14,7 @@ class TestFieldTableGet:
         """
         Тест успешного получения таблицы полей
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         spec_id = data_helper.get_or_create_spec_id_by_name(
             token=token, russian_name=TEST_CULTURES['wheat']['russian_name']
         )
@@ -37,7 +37,7 @@ class TestFieldTableCreate:
         """
         Тест успешного создания таблицы полей
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         spec_id = data_helper.get_or_create_spec_id_by_name(
             token=token, russian_name=TEST_CULTURES['wheat']['russian_name']
         )

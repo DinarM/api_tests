@@ -9,7 +9,7 @@ class TestPerformTTestMultipleGet:
     def test_perform_t_test_multiple_get(
         self, get_token, plastilin_db_api, data_helper, schema_validator
     ):
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['barley']['russian_name'],
@@ -37,7 +37,7 @@ class TestPerformTTestMultipleGet:
     def test_perform_t_test_multiple_get_sort_by(
         self, get_token, plastilin_db_api, data_helper, sort_by, reverse
     ):
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['barley']['russian_name'],
@@ -81,7 +81,7 @@ class TestPerformTTestMultipleGet:
     def test_perform_t_test_multiple_get_sort_by__key(
         self, get_token, plastilin_db_api, data_helper, sort_by__key, sort_by__value, reverse
     ):
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['barley']['russian_name'],
@@ -132,7 +132,7 @@ class TestPerformTTestMultipleGet:
     def test_perform_t_test_multiple_get_value_of_multiple(
         self, get_token, plastilin_db_api, data_helper, name_of_multiple, value_of_multiple
     ):
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['barley']['russian_name'],
@@ -179,7 +179,7 @@ class TestPerformTTestMultipleGet:
     def test_perform_t_test_multiple_get_filter(
         self, get_token, plastilin_db_api, data_helper, filter_name, filter_value
     ):
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['barley']['russian_name'],

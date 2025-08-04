@@ -8,7 +8,7 @@ from utils.api.constants import FIELDS, TEST_CULTURES
 @pytest.fixture(scope='function', autouse=True)
 def cleanup_once_per_module(get_token, data_helper):
     yield
-    token = get_token('head_of_company_company_1')
+    token = get_token('company_1.head_of_company')
     data_helper.delete_all_field_year_permissions(token=token)
 
 
@@ -23,7 +23,7 @@ class TestFieldYearPermissionsGet:
         """
         Тест успешного получения разрешений на полевые годы
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -49,7 +49,7 @@ class TestFieldYearPermissionsGet:
         """
         Тест успешного получения разрешений на полевые годы по ID
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -83,7 +83,7 @@ class TestFieldYearPermissionsCreate:
         """
         Тест успешного создания разрешений на полевые годы
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -115,7 +115,7 @@ class TestFieldYearPermissionsUpdate:
         """
         Тест успешного обновления разрешений на полевые годы
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -152,7 +152,7 @@ class TestFieldYearPermissionsDelete:
         """
         Тест успешного удаления разрешений на полевые годы
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -175,11 +175,11 @@ class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.OK),  # баг
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.OK),  # баг
+            ('company_1.head_of_company', HTTPStatus.OK),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_get_field_year_permissions_by_role(
@@ -195,18 +195,18 @@ class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.OK),
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.OK),
+            ('company_1.head_of_company', HTTPStatus.OK),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_get_field_year_permissions_by_id_by_role(
         self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
-        head_of_company_token = get_token('head_of_company_company_1')
+        head_of_company_token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=head_of_company_token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -227,18 +227,18 @@ class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.CREATED),
-            ('head_of_company_company_1', HTTPStatus.CREATED),
-            ('head_of_division_company_1', HTTPStatus.CREATED),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.CREATED),
+            ('company_1.head_of_company', HTTPStatus.CREATED),
+            ('company_1.division_1.head_of_division', HTTPStatus.CREATED),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_create_field_year_permissions_by_role(
         self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
-        head_of_company_token = get_token('head_of_company_company_1')
+        head_of_company_token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=head_of_company_token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -257,18 +257,18 @@ class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.OK),
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.OK),
+            ('company_1.head_of_company', HTTPStatus.OK),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_update_field_year_permissions_by_role(
         self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
-        head_of_company_token = get_token('head_of_company_company_1')
+        head_of_company_token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=head_of_company_token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],
@@ -291,18 +291,18 @@ class TestFieldYearPermissionsPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.NO_CONTENT),
-            ('head_of_company_company_1', HTTPStatus.NO_CONTENT),
-            ('head_of_division_company_1', HTTPStatus.NO_CONTENT),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.NO_CONTENT),
+            ('company_1.head_of_company', HTTPStatus.NO_CONTENT),
+            ('company_1.division_1.head_of_division', HTTPStatus.NO_CONTENT),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_delete_field_year_permissions_by_role(
         self, plastilin_db_api, data_helper, role, expected_status, get_token
     ):
         token = get_token(role)
-        head_of_company_token = get_token('head_of_company_company_1')
+        head_of_company_token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=head_of_company_token,
             spec_name=TEST_CULTURES['wheat']['russian_name'],

@@ -7,7 +7,7 @@ class TestCombinedPlotFieldLineGenealogyGet:
     def test_combined_plot_field_line_genealogy_get_success(
         self, get_token, plastilin_db_api, data_helper, schema_validator
     ):
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,
             spec_name=TEST_CULTURES['barley']['russian_name'],

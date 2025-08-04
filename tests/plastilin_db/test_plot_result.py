@@ -8,7 +8,7 @@ from utils.api.constants import PLOT_RESULT_FIELDS
 
 class TestPlotResultCreate:
     def test_plot_result_create_with_all_fields(self, get_token, plastilin_db_api, data_helper):
-        token = get_token('standalone_user')
+        token = get_token()
 
         plot_data = data_helper.generate_plot_result_data(
             field_name=PLOT_RESULT_FIELDS['field_name'],
@@ -58,7 +58,7 @@ class TestPlotResultCreate:
     def test_plot_result_update_phenotypic_fields_and_dev_stage_fields(
         self, get_token, plastilin_db_api, data_helper
     ):
-        token = get_token('standalone_user')
+        token = get_token()
 
         plot_data = data_helper.generate_plot_result_data(
             field_name=PLOT_RESULT_FIELDS['field_name'],
@@ -116,7 +116,7 @@ class TestPlotResultCreate:
             region=PLOT_RESULT_FIELDS['region'],
         )
         
-        time.sleep(1)
+        time.sleep(4)
 
         response_combined_plot_field_line_genealogy = (
             plastilin_db_api.get_combined_plot_field_line_genealogy(
@@ -143,7 +143,7 @@ class TestPlotResultCreate:
         self, get_token, plastilin_db_api, data_helper, repeats, 
         number_of_plots, phenotypic_fields, dev_stage_fields
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
 
         plot_data = data_helper.generate_plot_result_data(
             field_name=PLOT_RESULT_FIELDS['field_name'],
@@ -205,7 +205,7 @@ class TestPlotResultCreate:
         self, get_token, plastilin_db_api, data_helper, repeats, 
         number_of_plots, phenotypic_fields, dev_stage_fields
     ):
-        token = get_token('standalone_user')
+        token = get_token('other.standalone_user')
 
         plot_data = data_helper.generate_plot_result_data(
             field_name=PLOT_RESULT_FIELDS['field_name'],
@@ -265,7 +265,7 @@ class TestPlotResultCreate:
             region=PLOT_RESULT_FIELDS['region'],
         )
         
-        time.sleep(1)
+        time.sleep(4)
 
         response_combined_plot_field_line_genealogy = (
             plastilin_db_api.get_combined_plot_field_line_genealogy(

@@ -14,7 +14,7 @@ class TestUsersByCompanyIdGet:
         """
         Тест успешного получения списка пользователей по ID компании
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
 
         response = users_api.get_users_by_company_id(token=token)
 
@@ -43,7 +43,7 @@ class TestUsersByCompanyIdGet:
         """
         Тест успешного получения списка пользователей по ID компании
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
 
         response = users_api.get_users_by_company_id(
             token=token,
@@ -86,7 +86,7 @@ class TestUsersByCompanyIdGet:
         """
         Тест успешного получения списка пользователей по ID компании
         """
-        token = get_token('head_of_company_company_1')
+        token = get_token('company_1.head_of_company')
 
         response = users_api.get_users_by_company_id(
             token=token,
@@ -130,11 +130,11 @@ class TestUsersByCompanyIdGetPermissions:
     @pytest.mark.parametrize(
         'role,expected_status',
         [
-            ('super_admin', HTTPStatus.OK),
-            ('head_of_company_company_1', HTTPStatus.OK),
-            ('head_of_division_company_1', HTTPStatus.OK),
-            ('employee_company_1', HTTPStatus.FORBIDDEN),
-            ('standalone_user', HTTPStatus.FORBIDDEN),
+            ('other.super_admin', HTTPStatus.OK),
+            ('company_1.head_of_company', HTTPStatus.OK),
+            ('company_1.division_1.head_of_division', HTTPStatus.OK),
+            ('company_1.division_1.employee_1', HTTPStatus.FORBIDDEN),
+            ('other.standalone_user', HTTPStatus.FORBIDDEN),
         ],
     )
     def test_get_users_by_company_id_permissions(
