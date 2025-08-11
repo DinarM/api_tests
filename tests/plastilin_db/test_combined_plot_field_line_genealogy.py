@@ -26,3 +26,27 @@ class TestCombinedPlotFieldLineGenealogyGet:
         schema_validator.assert_valid_response(
             response_data, 'plastilin_db/combined_plot_field_line_genealogy/get_response.json'
         )
+
+
+    def test_combined_plot_field_line_genealogy_get_success_for_all_users(
+        self, get_token, plastilin_db_api, data_helper, schema_validator
+    ):
+
+        spec_name = 'Тестовая культура для ролевых тестов'
+
+        tokens = {
+            'company_1.head_of_company': get_token('company_1.head_of_company'),
+            'company_1.division_1.employee_1': get_token('company_1.division_1.employee_1'),
+            'company_1.division_1.head_of_division': get_token('company_1.division_1.head_of_division'),
+            'company_1.division_2.employee_1': get_token('company_1.division_2.employee_1'),
+            'company_1.division_2.head_of_division': get_token('company_1.division_2.head_of_division'),
+        }
+
+        users_data = data_helper.create_plot_data_for_all_users(
+            spec_name=spec_name,
+            **tokens,
+        )
+
+        print(users_data)
+        
+        assert users_data == 1

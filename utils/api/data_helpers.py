@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
-from utils.api.constants import TEST_DATA_PATH
+from utils.api.constants import PLOT_FIELDS_BY_ROLE, TEST_DATA_PATH
 
 
 class DataHelper:
@@ -39,10 +39,11 @@ class DataHelper:
         response = self.plastilin_db_api.get_species_table(token=token)
 
         if response.status != HTTPStatus.OK:
-            raise Exception(f'Ошибка получения списка культур: {response.status}')
+            raise Exception(f'Ошибка получения списка культур: {response.status} {response.text()}')
 
         data = response.json()
         species_list = data.get('data', [])
+
 
         for item in species_list:
             if item['russian_name'].strip() == russian_name.strip():
@@ -54,9 +55,10 @@ class DataHelper:
 
         if response.status == HTTPStatus.CREATED:
             created_data = response.json()
+            print(created_data)
             return created_data['spec_id']
         else:
-            raise Exception(f'Ошибка создания культуры: {response.status}')
+            raise Exception(f'Ошибка создания культуры: {response.status} {response.text()}')
 
     def get_my_company_id(self, token: str) -> Optional[int]:
         """
@@ -114,9 +116,28 @@ class DataHelper:
                         field_year_permission_id=permission_id
                     )
                 except Exception:
-                    print(f'Ошибка удаления разрешения: {permission_id}')
+                    ValueError(f'Ошибка удаления разрешения: {permission_id}')
 
+    def delete_all_users_groups(self, token: str) -> None:
+        """
+        Удаляет все группы пользователей для текущего пользователя
+        """
+        response = self.users_api.get_users_groups(token=token)
+        if response.status != HTTPStatus.OK:
+            raise Exception(f'Ошибка получения списка групп пользователей: {response.status}')
 
+        data = response.json()
+
+        for group in data:
+            group_id = group.get('id')
+            if group_id:
+                try:
+                    response = self.users_api.delete_users_group(
+                        token=token,
+                        group_id=group_id
+                    )
+                except Exception:
+                    ValueError(f'Ошибка удаления группы пользователей: {group_id}')
 
     def get_or_create_year_id(
         self, token: str, year: int, spec_id: int, field_id: int, region: str
@@ -799,15 +820,16 @@ class DataHelper:
                     ).days
                     assert int(days_after_sowing) == int(response_stage['days_after_sowing'])
 
-    def generate_random_plot_data(self, plot_fields: Dict[str, Any], spec_name: str, token: str):
+    def generate_random_plot_data(self, plot_fields: Dict[str, Any], token: str, spec_name: Optional[str] = None):
+
+        if spec_name is None:
+            spec_name = self.generate_random_string(name='Тестовая культура')
         
         plot_data = self.generate_plot_result_data(
             field_name=plot_fields['field_name'],
             year=plot_fields['year'],
             region=plot_fields['region'],
             base_plot_name=plot_fields['base_plot_name'],
-            number_of_plots=plot_fields['number_of_plots'],
-            sort_name=plot_fields['sort_name'],
             row_count=plot_fields['row_count'],
             repeats=plot_fields['repeats'],
             phenotypic_fields=plot_fields['phenotypic_fields'],
@@ -837,3 +859,22 @@ class DataHelper:
             'field_id': field_id,
             'year_id': year_id,
         }
+
+
+    def create_plot_data_for_all_users(
+        self, spec_name: Optional[str] = None, **tokens
+    ) -> Dict[str, Any]:
+
+        if not tokens:
+            raise ValueError('Не переданы токены пользователей')
+
+        users_data = {}
+
+        for user_role, token in tokens.items():
+            plot_fields = PLOT_FIELDS_BY_ROLE[user_role]
+            data = self.generate_random_plot_data(
+                plot_fields=plot_fields, token=token, spec_name=user_role
+            )
+            users_data[user_role] = data
+
+        return users_data

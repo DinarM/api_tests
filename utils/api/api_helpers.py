@@ -48,7 +48,7 @@ class APIHelper:
             
             # Настраиваем логирование
             logging.basicConfig(
-                level=logging.DEBUG,
+                level=logging.WARNING,
                 format='%(asctime)s - %(levelname)s - %(message)s',
                 handlers=[
                     logging.FileHandler(log_path, encoding='utf-8'),

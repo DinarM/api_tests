@@ -29,6 +29,11 @@ API_ENDPOINTS = {
         'plot_result': '/api/v1/plastilin_db/upload_custom_file/plot_result/',
         'combined_plot_field_line_genealogy':
             '/api/v1/plastilin_db/combined_plot_field_line_genealogy/',
+        'sowing_list': '/api/v1/plastilin_db/sowing_list/',
+        'download_plot_data': '/api/v1/plastilin_db/download_plot_data/',
+        'download_selection_list': '/api/v1/plastilin_db/download_selection_list/',
+        'export_to_excel': '/api/v1/plastilin_db/field_maps/export_to_excel/',
+        'download_field_file': '/api/v1/plastilin_db/excel_file/download_field_file/',
     },
     'notice_app': {
         'notifications': '/api/v1/notice_app/notifications/',
@@ -132,85 +137,86 @@ PLOT_RESULT_FIELDS = {
     ],
 }
 
-PLOT_FIELDS_HEAD_OF_COMPANY = {
-    'field_name': 'Питомник директора компании',
-    'year': YEARS['2025'],
-    'region': REGIONS['Алтайский край'],
-    'base_plot_name': 'Делянка директора компании',
-    'row_count': 5,
-    'repeats': 2,
-    'phenotypic_fields': [
-        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
-    ],
-    'dev_stage_fields': [
-        {'name': 'Всходы', 'type': 'date'},
-        {'name': 'Развертывание первых листьев', 'type': 'date'},
-    ],
+
+
+PLOT_FIELDS_BY_ROLE = {
+    'company_1.head_of_company': {
+        'field_name': 'Питомник директора компании',
+        'year': YEARS['2025'],
+        'region': REGIONS['Алтайский край'],
+        'base_plot_name': 'Делянка директора компании',
+        'row_count': 5,
+        'repeats': 2,
+        'phenotypic_fields': [
+            {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+        ],
+        'dev_stage_fields': [
+            {'name': 'Всходы', 'type': 'date'},
+            {'name': 'Развертывание первых листьев', 'type': 'date'},
+        ],
+    },
+    'company_1.division_1.head_of_division': {
+        'field_name': 'Питомник руководителя дивизии 1',
+        'year': YEARS['2020'],
+        'region': REGIONS['Республика Башкортостан'],
+        'base_plot_name': 'Делянка руководителя дивизии 1',
+        'row_count': 5,
+        'repeats': 2,
+        'phenotypic_fields': [
+            {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+        ],
+        'dev_stage_fields': [
+            {'name': 'Всходы', 'type': 'date'},
+            {'name': 'Развертывание первых листьев', 'type': 'date'},
+        ],
+    },
+    'company_1.division_2.head_of_division': {
+        'field_name': 'Питомник руководителя дивизии 2',
+        'year': YEARS['2021'],
+        'region': REGIONS['Республика Мордовия'],
+        'base_plot_name': 'Делянка руководителя дивизии 2',
+        'row_count': 5,
+        'repeats': 2,
+        'phenotypic_fields': [
+            {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+        ],
+        'dev_stage_fields': [
+            {'name': 'Всходы', 'type': 'date'},
+            {'name': 'Развертывание первых листьев', 'type': 'date'},
+        ],
+    },
+    'company_1.division_1.employee_1': {
+        'field_name': 'Питомник сотрудника 1 дивизии 1',
+        'year': YEARS['2020'],
+        'region': REGIONS['Республика Марий Эл'],
+        'base_plot_name': 'Делянка сотрудника 1 дивизии 1',
+        'row_count': 5,
+        'repeats': 2,
+        'phenotypic_fields': [
+            {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+        ],
+        'dev_stage_fields': [
+            {'name': 'Всходы', 'type': 'date'},
+            {'name': 'Развертывание первых листьев', 'type': 'date'},
+        ],
+    },
+    'company_1.division_2.employee_1': {
+        'field_name': 'Питомник сотрудника 1 дивизии 2',
+        'year': YEARS['2021'],
+        'region': REGIONS['Республика Чувашия'],
+        'base_plot_name': 'Делянка сотрудника 1 дивизии 2',
+        'row_count': 5,
+        'repeats': 2,
+        'phenotypic_fields': [
+            {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
+        ],
+        'dev_stage_fields': [
+            {'name': 'Всходы', 'type': 'date'},
+            {'name': 'Развертывание первых листьев', 'type': 'date'},
+        ],
+    },
 }
 
-PLOT_FIELDS_HEAD_OF_DIVISION_1 = {
-    'field_name': 'Питомник руководителя дивизии 1',
-    'year': YEARS['2020'],
-    'region': REGIONS['Республика Башкортостан'],
-    'base_plot_name': 'Делянка руководителя дивизии 1',
-    'row_count': 5,
-    'repeats': 2,
-    'phenotypic_fields': [
-        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
-    ],
-    'dev_stage_fields': [
-        {'name': 'Всходы', 'type': 'date'},
-        {'name': 'Развертывание первых листьев', 'type': 'date'},
-    ],
-}
-
-PLOT_FIELDS_HEAD_OF_DIVISION_2 = {
-    'field_name': 'Питомник руководителя дивизии 2',
-    'year': YEARS['2021'],
-    'region': REGIONS['Республика Мордовия'],
-    'base_plot_name': 'Делянка руководителя дивизии 2',
-    'row_count': 5,
-    'repeats': 2,
-    'phenotypic_fields': [
-        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
-    ],
-    'dev_stage_fields': [
-        {'name': 'Всходы', 'type': 'date'},
-        {'name': 'Развертывание первых листьев', 'type': 'date'},
-    ],
-}
-
-PLOT_FIELDS_EMPLOYEE_1_DIVISION_1 = {
-    'field_name': 'Питомник сотрудника 1 дивизии 1',
-    'year': YEARS['2020'],
-    'region': REGIONS['Республика Марий Эл'],
-    'base_plot_name': 'Делянка сотрудника 1 дивизии 1',
-    'row_count': 5,
-    'repeats': 2,
-    'phenotypic_fields': [
-        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
-    ],
-    'dev_stage_fields': [
-        {'name': 'Всходы', 'type': 'date'},
-        {'name': 'Развертывание первых листьев', 'type': 'date'},
-    ],
-}
-
-PLOT_FIELDS_EMPLOYEE_1_DIVISION_2 = {
-    'field_name': 'Питомник сотрудника 1 дивизии 2',
-    'year': YEARS['2021'],
-    'region': REGIONS['Республика Чувашия'],
-    'base_plot_name': 'Делянка сотрудника 1 дивизии 2',
-    'row_count': 5,
-    'repeats': 2,
-    'phenotypic_fields': [
-        {'name': 'Высота растения', 'type': 'float', 'unit': 'см'},
-    ],
-    'dev_stage_fields': [
-        {'name': 'Всходы', 'type': 'date'},
-        {'name': 'Развертывание первых листьев', 'type': 'date'},
-    ],
-}
 
 PLOT_RESULT_MODIFICATIONS = {
     'modifications':                 [
@@ -246,4 +252,3 @@ BAD_REQUEST_MESSAGE = {
     'auth_locked': 'You have exceeded the allowed number of login attempts',
     'block_time': 60,
 }
-

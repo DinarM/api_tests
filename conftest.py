@@ -1,5 +1,7 @@
 # import os
 
+from http import HTTPStatus
+
 import pytest
 from playwright.sync_api import sync_playwright
 
@@ -69,16 +71,17 @@ def get_token(api_context, env, get_refresh_token=False):
         try:
             creds = get_credentials(env, role)
         except Exception as e:
-            pytest.skip(f'Роль {role} недоступна: {e}')
+            raise ValueError(f'Роль {role} недоступна: {e}') from e
         payload = {'username': creds['username'], 'password': creds['password']}
         headers = {'Content-Type': 'application/json'}
         response = api_context.post(API_ENDPOINTS['auth']['login'], data=payload, headers=headers)
-        try:
-            response_data = response.json()
-        except Exception:
-            print('Ошибка авторизации! Ответ сервера:')
-            print(response.text())
-            raise
+
+        assert response.status == HTTPStatus.OK, (
+            f'Ошибка авторизации! Ответ сервера: {response.json()}'
+        )
+
+        response_data = response.json()
+
         if get_refresh_token:
             return f'Bearer {response_data["refresh"]}'
         return f'Bearer {response_data["access"]}'

@@ -50,11 +50,11 @@ CREDENTIALS = {
             'division_2': {
                 'employee_1': {
                     'username': 'QA_user_1_div_2',
-                    'password': 'g5dsLfRVu6EAf5WEl3h3',
+                    'password': 'hrV3V4BbpBrPkKxgzERe',
                 },
                 'head_of_division': {
                     'username': 'QA_head_of_div_2',
-                    'password': 'R5YDvyMJeDYI88cpRFe0',
+                    'password': 'AEHIX3VaVzCKHr6Ig37z',
                 },
             },
         },

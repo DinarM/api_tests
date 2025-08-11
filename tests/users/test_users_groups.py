@@ -3,6 +3,12 @@ from http import HTTPStatus
 import pytest
 
 
+@pytest.fixture(scope='function', autouse=True)
+def cleanup_once_per_module(get_token, data_helper):
+    yield
+    token = get_token('company_1.head_of_company')
+    data_helper.delete_all_users_groups(token=token)
+
 class TestUsersGroupsGet:
     """
     Тесты для получения списка групп пользователей
