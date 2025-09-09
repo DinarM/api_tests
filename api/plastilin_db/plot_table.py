@@ -45,3 +45,25 @@ class PlotTableAPI(BaseAPI):
             data=payload,
             headers=headers,
         )
+
+
+    def update_plot_table(
+        self,
+        plot_id: int,
+        token: Optional[str] = None,
+        plot_label: Optional[str] = None,
+    ) -> APIResponse:
+        headers = self.headers.copy()
+        if token:
+            headers['Authorization'] = token
+
+        payload = {
+            'plot_label': plot_label,
+        }
+        payload = APIHelper.filter_none_values(payload)
+
+        return self.context.patch(
+            API_ENDPOINTS['plastilin_db']['plot_table'] + f'{plot_id}/',
+            data=payload,
+            headers=headers,
+        )

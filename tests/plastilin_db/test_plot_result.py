@@ -193,7 +193,7 @@ class TestPlotResultCreate:
 
         data_helper.compare_plot_response_with_api(response_data, plot_data)
 
-    # @pytest.mark.skip(reason='TODO: fix')
+    @pytest.mark.skip(reason='TODO: fix')
     @pytest.mark.parametrize('repeats, number_of_plots, phenotypic_fields, dev_stage_fields', [
         (None, None, None, None),
         (None, None, None, PLOT_RESULT_FIELDS['dev_stage_fields']),

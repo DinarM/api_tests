@@ -13,16 +13,10 @@ def cleanup_once_per_module(get_token, data_helper):
 
 
 class TestFieldYearPermissionsGet:
-    """
-    Тесты для получения разрешений на полевые годы
-    """
 
     def test_get_field_year_permissions_success(
         self, get_token, plastilin_db_api, schema_validator, data_helper
     ):
-        """
-        Тест успешного получения разрешений на полевые годы
-        """
         token = get_token('company_1.head_of_company')
         _, _, year_id = data_helper.get_or_create_spec_field_year_id(
             token=token,

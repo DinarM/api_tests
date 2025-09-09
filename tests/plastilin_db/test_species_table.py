@@ -75,9 +75,6 @@ class TestSpeciesTableGet:
 
         response = plastilin_db_api.get_species_table(token=token)
 
-        print(f'Response status: {response.status}')
-        print(f'Response body: {response.json()}')
-
         assert response.status == HTTPStatus.OK
 
         response_data = response.json()

@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "mother": {
+        "type": "string"
+      },
+      "common_mean": {
+        "type": "string"
+      },
+      "fathers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "common_mean": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "value",
+            "common_mean"
+          ]
+        }
+      }
+    },
+    "required": [
+      "mother",
+      "common_mean",
+      "fathers"
+    ]
+  }
+}

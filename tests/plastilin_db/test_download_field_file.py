@@ -23,6 +23,8 @@ class TestDownloadFieldFile:
         
         assert response.status == HTTPStatus.OK
 
-        assert response.headers.get('content-type', '').startswith('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        assert response.headers.get('content-type', '').startswith(
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
         assert len(response.body()) > 0
 

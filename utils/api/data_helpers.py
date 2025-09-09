@@ -39,7 +39,9 @@ class DataHelper:
         response = self.plastilin_db_api.get_species_table(token=token)
 
         if response.status != HTTPStatus.OK:
-            raise Exception(f'Ошибка получения списка культур: {response.status} {response.text()}')
+            raise Exception(
+                f'Ошибка получения списка культур: {response.status} {response.text()}'
+            )
 
         data = response.json()
         species_list = data.get('data', [])
@@ -55,7 +57,6 @@ class DataHelper:
 
         if response.status == HTTPStatus.CREATED:
             created_data = response.json()
-            print(created_data)
             return created_data['spec_id']
         else:
             raise Exception(f'Ошибка создания культуры: {response.status} {response.text()}')
@@ -820,7 +821,9 @@ class DataHelper:
                     ).days
                     assert int(days_after_sowing) == int(response_stage['days_after_sowing'])
 
-    def generate_random_plot_data(self, plot_fields: Dict[str, Any], token: str, spec_name: Optional[str] = None):
+    def generate_random_plot_data(
+        self, plot_fields: Dict[str, Any], token: str, spec_name: Optional[str] = None
+    ):
 
         if spec_name is None:
             spec_name = self.generate_random_string(name='Тестовая культура')
@@ -878,3 +881,23 @@ class DataHelper:
             users_data[user_role] = data
 
         return users_data
+
+
+    def delete_all_field_tables_in_spec(self, token: str, spec_name: str) -> bool:
+        spec_id = self.get_or_create_spec_id_by_name(token=token, russian_name=spec_name)
+
+        response = self.plastilin_db_api.get_field_table(token=token, spec_id=spec_id)
+        if response.status != HTTPStatus.OK:
+            raise Exception(f'Ошибка получения списка полей: {response.status}')
+
+        field_tables = response.json()
+        for field_table in field_tables:
+            response = self.plastilin_db_api.delete_field_table(
+                token=token, field_id=field_table['field_id']
+            )
+            if response.status != HTTPStatus.NO_CONTENT:
+                raise Exception(f'Ошибка удаления поля: {response.status}')
+
+        return True
+        
+        

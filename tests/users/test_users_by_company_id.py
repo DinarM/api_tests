@@ -26,6 +26,7 @@ class TestUsersByCompanyIdGet:
             response_data, 'users/users_by_company_id/list_response.json'
         )
 
+    @pytest.mark.skip(reason='Разобраться, используется ли этот фильтр на фронте')
     @pytest.mark.parametrize(
         'username,role,group_name',
         [

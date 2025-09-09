@@ -1,0 +1,123 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "object",
+    "properties": {
+      "model": {
+        "type": "string"
+      },
+      "model_stat": {
+        "type": "object",
+        "properties": {
+          "текстура_семян": {
+            "type": "object",
+            "properties": {
+              "df": {
+                "type": "number"
+              },
+              "sum_sq": {
+                "type": "number"
+              },
+              "mean_sq": {
+                "type": "number"
+              },
+              "F": {
+                "type": "number"
+              },
+              "PR(>F)": {
+                "type": "number"
+              },
+              "significance": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "df",
+              "sum_sq",
+              "mean_sq",
+              "F",
+              "PR(>F)",
+              "significance"
+            ]
+          },
+          "Residual": {
+            "type": "object",
+            "properties": {
+              "df": {
+                "type": "number"
+              },
+              "sum_sq": {
+                "type": "number"
+              },
+              "mean_sq": {
+                "type": "number"
+              },
+              "F": {},
+              "PR(>F)": {},
+              "significance": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "df",
+              "sum_sq",
+              "mean_sq",
+              "F",
+              "PR(>F)",
+              "significance"
+            ]
+          }
+        },
+        "required": [
+          "текстура_семян",
+          "Residual"
+        ]
+      },
+      "predictors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "predictor": {
+              "type": "string"
+            },
+            "pairwise_comparison": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "group1": {
+                    "type": "string"
+                  },
+                  "group2": {
+                    "type": "string"
+                  },
+                  "p-adj": {
+                    "type": "number"
+                  },
+                  "significance": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "group1",
+                  "group2",
+                  "p-adj",
+                  "significance"
+                ]
+              }
+            }
+          },
+          "required": [
+            "predictor",
+            "pairwise_comparison"
+          ]
+        }
+      }
+    },
+    "required": [
+      "model",
+      "model_stat",
+      "predictors"
+    ]
+  }

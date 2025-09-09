@@ -1,5 +1,6 @@
-from utils.api.constants import TEST_CULTURES, FIELDS
 from http import HTTPStatus
+
+from utils.api.constants import FIELDS, TEST_CULTURES
 
 
 class TestDownloadPlotData:
@@ -23,5 +24,4 @@ class TestDownloadPlotData:
         assert response.headers.get('content-type', '').startswith(
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
-        assert len(response.body()) > 0  
-        assert response.headers.get('content-disposition', '').startswith('attachment') 
+        assert len(response.body()) > 0

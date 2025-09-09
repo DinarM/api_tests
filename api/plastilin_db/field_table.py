@@ -23,3 +23,13 @@ class FieldTableApi(BaseAPI):
         return self.context.post(
             API_ENDPOINTS['plastilin_db']['field_table'], headers=headers, data=payload
         )
+
+    def delete_field_table(
+        self, token: str, field_id: int
+    ) -> APIResponse:
+        headers = self.headers.copy()
+        headers['Authorization'] = token
+
+        return self.context.delete(
+            API_ENDPOINTS["plastilin_db"]["field_table"] + f'{field_id}/', headers=headers
+        )

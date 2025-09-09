@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "object",
+    "properties": {
+      "plot_final_result": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "plot": {
+              "type": "number"
+            },
+            "feature": {
+              "type": "string"
+            },
+            "value_float": {},
+            "value_text": {},
+            "unit": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "plot",
+            "feature",
+            "value_float",
+            "value_text",
+            "unit"
+          ]
+        }
+      },
+      "brush_phenotype_table": {
+        "type": "array",
+        "items": {}
+      }
+    },
+    "required": [
+      "plot_final_result",
+      "brush_phenotype_table"
+    ]
+  }

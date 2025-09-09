@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "combination": {
+        "type": "string"
+      },
+      "corr": {
+        "type": "number"
+      },
+      "x": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "y": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "trend_line": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "y": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ]
+      }
+    },
+    "required": [
+      "combination",
+      "corr",
+      "x",
+      "y",
+      "trend_line"
+    ]
+  }
+}

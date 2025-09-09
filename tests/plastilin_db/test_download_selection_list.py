@@ -7,7 +7,9 @@ from utils.api.constants import FIELDS, TEST_CULTURES
 
 class TestDownloadSelectionList:
     @pytest.mark.parametrize('type_of_file', [1, 2])
-    def test_download_selection_list_success(self, get_token, plastilin_db_api, data_helper, type_of_file):
+    def test_download_selection_list_success(
+        self, get_token, plastilin_db_api, data_helper, type_of_file
+    ):
         token = get_token('company_1.head_of_company')
 
         _, field_id, year_id = data_helper.get_or_create_spec_field_year_id(
@@ -25,7 +27,6 @@ class TestDownloadSelectionList:
             year_id=str(year_id),
         )
 
-        print(response.text)
         assert response.status == HTTPStatus.OK
 
         assert response.headers.get('content-type', '').startswith(

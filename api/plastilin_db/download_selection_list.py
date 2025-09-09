@@ -5,7 +5,13 @@ from utils.api.constants import API_ENDPOINTS
 
 
 class DownloadSelectionListAPI(BaseAPI):
-    def download_selection_list(self, token: str, field_id: str, type_of_file: int, year_id: str) -> APIResponse:
+    def download_selection_list(
+        self, 
+        token: str, 
+        field_id: str, 
+        type_of_file: int, 
+        year_id: str
+    ) -> APIResponse:
         headers = self.headers.copy()
         headers['Authorization'] = token
 

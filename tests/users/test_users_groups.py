@@ -107,7 +107,10 @@ class TestUsersGroupsCreate:
         'read,write,add_yourself,user_ids',
         [
             (True, True, True, ['company_1.division_1.employee_1']),
-            (True, False, False, ['company_1.division_1.employee_1', 'company_1.division_1.employee_2']),
+            (True, False, False, [
+                'company_1.division_1.employee_1', 
+                'company_1.division_1.employee_2'
+            ]),
             (False, True, False, None),
             (False, False, True, None),
             (True, True, False, None),

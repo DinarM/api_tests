@@ -178,3 +178,5 @@ cython_debug/
 
 *.xlsx
 /utils/data/
+
+.vscode/

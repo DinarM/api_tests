@@ -34,6 +34,26 @@ API_ENDPOINTS = {
         'download_selection_list': '/api/v1/plastilin_db/download_selection_list/',
         'export_to_excel': '/api/v1/plastilin_db/field_maps/export_to_excel/',
         'download_field_file': '/api/v1/plastilin_db/excel_file/download_field_file/',
+        'statistics_visualisation': '/api/v1/plastilin_db/statistics_visualisation/',
+        'quantitative_features': '/api/v1/plastilin_db/quantitative_features/',
+        'get_unique_harvest_technologies_from_field': (
+            '/api/v1/plastilin_db/get_unique_harvest_technologies_from_field/'
+        ),
+        'correlation': '/api/v1/plastilin_db/correlation/',
+        'qualitative_features': '/api/v1/plastilin_db/qualitative_features/',
+        'anova': '/api/v1/plastilin_db/anova/',
+        'ancova': '/api/v1/plastilin_db/ancova/',
+        'f1_analyze': '/api/v1/plastilin_db/f1_analyze/',
+        'get_heat_map': '/api/v1/plastilin_db/get_heat_map/',
+        'plot_final_results_add_multiple': '/api/v1/plastilin_db/plot_final_results/add_multiple/',
+        'genotype_mutation_create_by_pos_and_chr': (
+            '/api/v1/plastilin_db/genotype_mutation_create_by_pos_and_chr/'
+        ),
+        'plot_stage': '/api/v1/plastilin_db/plot_stage/',
+        'harvest_technology_add_multiple': '/api/v1/plastilin_db/harvest_technology/add_multiple/',
+        'get_url_to_upload_fastq': '/api/v1/plastilin_db/get_url_to_upload_fastq/',
+        'download_fastqc_archive': '/api/v1/plastilin_db/download_fastqc_archive/',
+        'get_fastqc_archives': '/api/v1/plastilin_db/get_fastqc_archives/',
     },
     'notice_app': {
         'notifications': '/api/v1/notice_app/notifications/',

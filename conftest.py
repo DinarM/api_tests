@@ -12,7 +12,7 @@ from api.users.users_api import UsersApi
 from config import get_base_url, get_credentials
 from schemas.validation import SchemaValidator
 from utils.api.api_helpers import APIHelper, NullValue
-from utils.api.constants import API_ENDPOINTS
+from utils.api.constants import API_ENDPOINTS, TEST_CULTURES
 from utils.api.data_helpers import DataHelper
 
 # os.environ['DEBUG'] = 'pw:api'  # Включает логирование API запросов
@@ -46,26 +46,26 @@ def api_context(env):
     playwright.stop()
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def plastilin_db_api(api_context):
     return PlastilinDbApi(api_context)
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def users_api(api_context):
     return UsersApi(api_context)
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def auth_api(api_context):
     return AuthApi(api_context)
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def notice_app_api(api_context):
     return NoticeAppApi(api_context)
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def get_token(api_context, env, get_refresh_token=False):
     def _get_token(role='other.super_admin'):
         try:
@@ -97,7 +97,7 @@ def schema_validator():
     return SchemaValidator()
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def data_helper(plastilin_db_api, users_api):
     """
     Фикстура для работы с данными
@@ -127,3 +127,15 @@ def null_value():
     )
     """
     return NullValue()
+
+
+@pytest.fixture(scope='session', autouse=True)
+def cleanup_once_per_module(get_token, data_helper):
+    """
+    Фикстура для удаления всех таблиц полей для текущего пользователя
+    """
+    yield
+    token = get_token('company_1.head_of_company')
+    data_helper.delete_all_field_tables_in_spec(
+        token=token, spec_name=TEST_CULTURES['wheat']['russian_name']
+    )

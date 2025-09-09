@@ -12,10 +12,10 @@ class TestFieldYearGet:
         """
         Тест получения полевого года по spec_id
         """
-        token = get_token()
+        token = get_token('company_1.head_of_company')
 
         spec_id = data_helper.get_or_create_spec_id_by_name(
-            token=token, russian_name=TEST_CULTURES['wheat']['russian_name']
+            token=token, russian_name=TEST_CULTURES['barley']['russian_name']
         )
 
         response = plastilin_db_api.get_field_year(token=token, spec_id=spec_id)
@@ -29,3 +29,4 @@ class TestFieldYearGet:
             'plastilin_db/field_year/list_response.json',
             'Получение списка полевых годов',
         )
+

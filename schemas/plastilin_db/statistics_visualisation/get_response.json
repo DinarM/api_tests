@@ -1,0 +1,465 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "белок в семенах": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    },
+    "бутонизация и цветение": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    },
+    "высота растения": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    },
+    "развертывание первых листьев": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    },
+    "размер бобов": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    },
+    "созревание бобов": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    },
+    "фаза ветвления": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    },
+    "фаза дозревания": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plot_name": {
+            "type": "string"
+          },
+          "line_name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "plot_data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plot_id": {
+                  "type": "number"
+                },
+                "line_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "plot_id",
+                "line_id"
+              ]
+            }
+          },
+          "tech": {
+            "type": "object",
+            "properties": {
+              "Ужин": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "Ужин"
+            ]
+          }
+        },
+        "required": [
+          "plot_name",
+          "line_name",
+          "data",
+          "plot_data",
+          "tech"
+        ]
+      }
+    }
+  },
+  "required": [
+    "белок в семенах",
+    "бутонизация и цветение",
+    "высота растения",
+    "развертывание первых листьев",
+    "размер бобов",
+    "созревание бобов",
+    "фаза ветвления",
+    "фаза дозревания"
+  ]
+}

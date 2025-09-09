@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string"
+      },
+      "fields": {
+        "type": "object",
+        "properties": {
+          "x-amz-meta-user_id": {
+            "type": "string"
+          },
+          "x-amz-meta-name": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "AWSAccessKeyId": {
+            "type": "string"
+          },
+          "policy": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "x-amz-meta-user_id",
+          "x-amz-meta-name",
+          "key",
+          "AWSAccessKeyId",
+          "policy",
+          "signature"
+        ]
+      }
+    },
+    "required": [
+      "url",
+      "fields"
+    ]
+  }

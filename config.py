@@ -5,6 +5,7 @@
 # Базовые URL для разных окружений
 ENVIRONMENTS = {
     'stage': 'https://test.plastilindev.ru',
+    'prod': 'https://www.plastilin.digital',
 }
 
 CURRENT_ENV = 'stage'
@@ -68,7 +69,8 @@ CREDENTIALS = {
         'head': {'username': 'head_dev', 'password': 'head_pass'},
         'ceo': {'username': 'ceo_dev', 'password': 'ceo_pass'},
     },
-    # Добавляйте другие окружения по необходимости
+    'prod': {
+    },
 }
 
 
@@ -78,7 +80,8 @@ def get_credentials(env=None, role='employee'):
 
     Args:
         env: Окружение (если None, используется CURRENT_ENV)
-        role: Роль пользователя (может быть простой строкой или путем через точку, например: 'other.super_admin' или 'company_1.head_of_company')
+        role: Роль пользователя (может быть простой строкой или путем через точку, 
+               например: 'other.super_admin' или 'company_1.head_of_company')
 
     Returns:
         dict: креды с ключами username и password
